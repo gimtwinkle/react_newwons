@@ -1,53 +1,36 @@
 name: Deploy
 
-
-
 on:
-
   push:
-
-    branches: ['main']
-
-
+    branches: ['dev']
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     container: pandoc/latex
 
     steps:
-
       - uses: actions/checkout@v2
-
-
 
       - name: Install mustache (to update the date)
 
         run: apk add ruby && gem install mustache
 
-
-
       - name: creates output
 
         run: sh ./build.sh
-
-
 
       - name: Pushes to another repository
 
         id: push_directory
 
-        uses: cpina/github-action-push-to-another-repository@main
+        uses: cpina/github-action-push-to-another-repository@dev
 
         env:
-
-          API_TOKEN_GITHUB: ${{ secrets.AUTO_ACTIONS }}
+          API_TOKEN_GITHUB: ${{ secrets.REACT_NEWWONS_TOKEN }}
 
         with:
-
           source-directory: 'output'
 
           destination-github-username: [gimtwinkle]
@@ -58,9 +41,7 @@ jobs:
 
           commit-message: ${{ github.event.commits[0].message }}
 
-          target-branch: main
-
-
+          target-branch: dev
 
       - name: Test get variable exported by push-to-another-repository
 
