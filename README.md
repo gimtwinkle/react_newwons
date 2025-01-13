@@ -11,3 +11,4 @@ react / nextjs / redux / typescript / chakra-ui / firebase(백엔드대체)<br>
 
 은영차장님 : STYLED.COMPONENT 사용 추천<br>
 
+안녕하세요:> 한솔입니다.
