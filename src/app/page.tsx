@@ -22,8 +22,7 @@ export default function Home() {
 
         <ol>
           <li> HELLO WORLD !!! </li>
-          <li> 자동배포 테스트 </li>
-          <li> 자동배포 테스트2 </li>
+          <li> auto deploy test</li>
         </ol>
 
         <div className={styles.ctas}>
