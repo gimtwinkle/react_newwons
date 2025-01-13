@@ -14,3 +14,5 @@ react / nextjs / redux / typescript / chakra-ui / firebase(백엔드대체)<br>
 안녕하세요:> 한솔입니다.
 
 안녀하세애애애애애애-옹! _조수진대리입니다:)
+
+:) - 작성됩니다. 은영.
