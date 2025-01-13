@@ -8,3 +8,6 @@
 👀 예상 개발환경<br>
 react / nextjs / redux / typescript / chakra-ui / firebase(백엔드대체)<br>
 이 외 다른의견 대환영입니당.<br>
+
+은영차장님 : STYLED.COMPONENT 사용 추천<br>
+
