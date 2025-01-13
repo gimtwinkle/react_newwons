@@ -1,48 +1,77 @@
-name: Deploy
+# org레포지토리에서 fork해온 현 레포지토리를 최신상태로 fetch and merge하는 스크립트입니다.
 
+name: Sync and merge upstream repository
 on:
-  push:
-    branches: ['dev']
+  workflow_dispatch:
+  schedule: 
+  - cron: "0 8 * * *" #Runs at 8:00 UTC(5:00 in Korea) every day.
 
 jobs:
-  build:
+  merge:
     runs-on: ubuntu-latest
-
-    container: pandoc/latex
-
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
+      - name: Merge upstream
+        run: |
+          git config --global user.name 'gimtwinkle'
+          git config --global user.email 'gimtwinkle@gmail.com'
+          # "git checkout master" is unnecessary, already here by default
+          git pull --unshallow  # this option is very important, you would get
+                                # complains about unrelated histories without it.
+                                # (but actions/checkout@v2 can also be instructed
+                                # to fetch all git depth right from the start)
+          git remote add upstream https://github.com/ball-and-four/react_newwons.git
+          git fetch upstream
+          git checkout master
+          git merge -Xtheirs upstream/master
+          git push origin master
+          # etc
 
-      - name: Install mustache (to update the date)
+# name: Deploy
 
-        run: apk add ruby && gem install mustache
+# on:
+#   push:
+#     branches: ['dev']
 
-      - name: creates output
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-        run: sh ./build.sh
+#     container: pandoc/latex
 
-      - name: Pushes to another repository
+#     steps:
+#       - uses: actions/checkout@v4
 
-        id: push_directory
+#       - name: Install mustache (to update the date)
 
-        uses: cpina/github-action-push-to-another-repository@main
+#         run: apk add ruby && gem install mustache
 
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.REACT_NEWWONS_TOKEN }}
+#       - name: creates output
 
-        with:
-          source-directory: 'output'
+#         run: sh ./build.sh
 
-          destination-github-username: gimtwinkle
+#       - name: Pushes to another repository
 
-          destination-repository-name: react_newwons
+#         id: push_directory
 
-          user-email: ${{ secrets.EMAIL }}
+#         uses: cpina/github-action-push-to-another-repository@main
 
-          commit-message: ${{ github.event.commits[0].message }}
+#         env:
+#           API_TOKEN_GITHUB: ${{ secrets.REACT_NEWWONS_TOKEN }}
 
-          target-branch: dev
+#         with:
+#           source-directory: 'output'
 
-      - name: Test get variable exported by push-to-another-repository
+#           destination-github-username: gimtwinkle
 
-        run: echo $DESTINATION_CLONED_DIRECTORY
+#           destination-repository-name: react_newwons
+
+#           user-email: ${{ secrets.EMAIL }}
+
+#           commit-message: ${{ github.event.commits[0].message }}
+
+#           target-branch: dev
+
+#       - name: Test get variable exported by push-to-another-repository
+
+#         run: echo $DESTINATION_CLONED_DIRECTORY
