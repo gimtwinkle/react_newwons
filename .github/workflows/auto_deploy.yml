@@ -23,7 +23,7 @@ jobs:
           source-directory: 'output'
           destination-github-username: gimtwinkle
           destination-repository-name: react_newwons
-          user-email: ${{ secrets.EMAIL }}
+          user-email: ${{ secrets.REACT_NEWWONS_EMAIL }}
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
       - name: Test get variable exported by push-to-another-repository
