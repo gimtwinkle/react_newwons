@@ -1,5 +1,18 @@
 # react_newwons
 
+## clone
+
+git clone https://github.com/ball-and-four/react_newwons.git
+
+## npm 설치
+
+npm i --no-save
+(npm install, npm i 로 설치할경우 pakage.json에 영향이 있어요!😎)
+
+## 개발화면 실행
+
+npm run dev
+
 모두 오너로 설정 되어있어서 읽기 쓰기가 가능합니다! <br>
 💕가능한지 readme에 내용추가로 작성테스트 해보세용!
 <br>
@@ -13,11 +26,10 @@ react / nextjs / redux / typescript / chakra-ui / firebase(백엔드대체)<br>
 
 안녕하세요:> 한솔입니다.
 
-안녀하세애애애애애애-옹! _조수진대리입니다:)
+안녀하세애애애애애애-옹! \_조수진대리입니다:)
 
 :) - 작성됩니다. 은영.
 작성됩니다2. 나연.
-
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
