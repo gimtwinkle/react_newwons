@@ -21,7 +21,7 @@ export default function Home() {
         </ol>
 
         <ol>
-          <li> HELL WORLD !!! </li>
+          <li> HELLO WORLD !!! </li>
         </ol>
 
         <div className={styles.ctas}>
