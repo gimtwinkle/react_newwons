@@ -23,6 +23,7 @@ export default function Home() {
         <ol>
           <li> HELLO WORLD !!! </li>
           <li> auto deploy test</li>
+          <li> auto deploy test2</li>
         </ol>
 
         <div className={styles.ctas}>
