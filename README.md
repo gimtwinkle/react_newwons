@@ -1,15 +1,16 @@
 # react_newwons
 
-## clone
+### clone
 
 git clone https://github.com/ball-and-four/react_newwons.git
 
-## npm 설치
+### npm 설치
 
-npm i --no-save
-(npm install, npm i 로 설치할경우 pakage.json에 영향이 있어요!😎)
+npm ci
+(✨npm install --no-save와 다른점은 사용할 의존성만 설치합니다.)
+(✨pm install로 설치할경우 pakage.json에 영향이 있어요!😎)
 
-## 개발화면 실행
+### 개발화면 실행
 
 npm run dev
 
