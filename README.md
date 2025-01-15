@@ -1,5 +1,7 @@
 # react_newwons
 
+### 설치하기
+
 ```bash
 git clone https://github.com/ball-and-four/react_newwons.git
 
@@ -45,9 +47,7 @@ git checkout -b "feature/Header"
 
 - typescript
 
-- ~~chakra-ui~~
-
-- styled component
+- ~~chakra-ui~~styled component
 
 - firebase(백엔드대체)<br>
 
