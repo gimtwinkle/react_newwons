@@ -1,5 +1,15 @@
 # react_newwons
 
+## site
+
+https://react-newwons.vercel.app/
+
+✨ main에 merge되면 자동배포 됩니다!
+
+## design
+
+https://www.figma.com/design/mAqJkBbbZOTSCxPDZB6iKi/%EC%99%80%EC%9D%B4%EC%96%B4%EB%94%94%EC%9E%90%EC%9D%B8?node-id=0-1&p=f&t=MT7zRmvNzOCJxjd0-0
+
 ### 설치하기
 
 ```bash
@@ -18,7 +28,9 @@ npm run dev
 
 ### 브랜치 전략
 
-1. main 브랜치를 기준으로 브랜치를 생성 (아래 코드 박스 참고)
+_((브랜치명 컨벤션을 위해서 브랜치는 생성 후 전달드리도록 하려고 합니다!))_
+
+~~1. main 브랜치를 기준으로 브랜치를 생성 (아래 코드 박스 참고)
 
 ```bash
 git switch main
@@ -37,7 +49,8 @@ git checkout -b "feature/Header"
    <br>
    <br>
    <br>
-   ###👀 예상 개발환경<br>
+
+### 👀 예상 개발환경<br>
 
 - react
 
