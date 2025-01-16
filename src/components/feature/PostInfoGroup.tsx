@@ -1,4 +1,5 @@
 'use client';
+import { Post } from '@/types/post';
 import Link from 'next/link';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -68,10 +69,23 @@ const PostInfo = styled.ul`
 `;
 
 const PostInfoGroup = () => {
-  const [postTitle, setPostTitle] = useState<string>('Post Title');
-  const [author, setAuthor] = useState<string>('Author');
-  const [category, setCategory] = useState<string>('Category');
-  const [timeStamp, setTimeStamp] = useState<string>('a min ago');
+  const [postData, setPostData] = useState<Post>({
+    title: 'Post Title',
+    author: 'Author',
+    category: 'Category',
+    timeStamp: 'a min ago',
+  });
+
+  const updatePost = (newPost: Post) => {
+    setPostData(newPost);
+  };
+
+  updatePost({
+    title: 'Post Title (temp)',
+    author: 'Author (temp)',
+    category: 'Category (temp)',
+    timeStamp: 'a min ago (temp)',
+  });
 
   return (
     <>
@@ -80,47 +94,14 @@ const PostInfoGroup = () => {
           <Link href="/">Home</Link>
         </li>
         <li>
-          <Link
-            href="/post/detail"
-            onLoad={(e) => {
-              setPostTitle('');
-            }}
-          >
-            {postTitle}
-          </Link>
+          <Link href="/post/detail">{postData.title}</Link>
         </li>
       </PostBreadCrumb>
-      <PostTitle
-        onLoad={(e) => {
-          setPostTitle('');
-        }}
-      >
-        {postTitle}
-      </PostTitle>
+      <PostTitle>{postData.title}</PostTitle>
       <PostInfo>
-        <li
-          className="lightBlue"
-          onLoad={(e) => {
-            setAuthor('');
-          }}
-        >
-          {author}
-        </li>
-        <li
-          className="blue"
-          onLoad={(e) => {
-            setCategory('');
-          }}
-        >
-          {category}
-        </li>
-        <li
-          onLoad={(e) => {
-            setTimeStamp('');
-          }}
-        >
-          {timeStamp}
-        </li>
+        <li className="lightBlue">{postData.author}</li>
+        <li className="blue">{postData.category}</li>
+        <li>{postData.timeStamp}</li>
       </PostInfo>
     </>
   );
