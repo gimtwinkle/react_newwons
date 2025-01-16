@@ -1,3 +1,13 @@
-export const Create = () => {
-  return <>작성영역</>;
+import { Button } from '@/components/common/Button';
+import { Input } from '@/components/common/Input';
+const Create = () => {
+  return (
+    <div>
+      <Input />
+      <br></br>
+      <Button />
+    </div>
+  );
 };
+
+export default Create;

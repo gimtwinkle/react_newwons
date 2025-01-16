@@ -1,4 +1,4 @@
-import { Posts } from '@/app/posts/page';
+import Posts from './posts/page';
 
 export default function Home() {
   return (
