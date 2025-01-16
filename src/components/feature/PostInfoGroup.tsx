@@ -80,13 +80,6 @@ const PostInfoGroup = () => {
     setPostData(newPost);
   };
 
-  updatePost({
-    title: 'Post Title (temp)',
-    author: 'Author (temp)',
-    category: 'Category (temp)',
-    timeStamp: 'a min ago (temp)',
-  });
-
   return (
     <>
       <PostBreadCrumb>
