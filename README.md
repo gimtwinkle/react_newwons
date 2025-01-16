@@ -30,10 +30,10 @@ npm run dev
 
 _((브랜치명 컨벤션을 위해서 브랜치는 생성 후 전달드리도록 하려고 합니다!))_
 
-~~1. main 브랜치를 기준으로 브랜치를 생성 (아래 코드 박스 참고)
+~~1. dev 브랜치를 기준으로 브랜치를 생성 (아래 코드 박스 참고)
 
 ```bash
-git switch main
+git switch dev
 git pull
 git checkout -b "feature/Header"
 # ↑↑ 메인 브랜치를 베이스로 새 브랜치를 생성해서 switch하는 명령어 입니다.
@@ -44,7 +44,6 @@ git checkout -b "feature/Header"
 4. 'New pull request'(초록버튼) 클릭
 5. base branch는 dev ... compare branch는 [작업브랜치] 선택후
 6. Create pull request
-7. 우측에서 reviewer(?) 에서 두명이상 선택 후 'Merge request'!
    <br>
    <br>
    <br>
