@@ -1,10 +1,12 @@
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Montserrat } from 'next/font/google';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
+
+const montserrat = Montserrat();
 
 export const metadata: Metadata = {
   title: 'React Newwons',
@@ -15,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${montserrat.className}`}>
         <Header />
         {children}
         <Footer />
