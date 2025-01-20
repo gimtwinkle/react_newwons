@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
 // import { getAnalytics } from 'firebase/analytics';
 import { initializeApp } from 'firebase/app';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDwKlE2zxuIX2BNm50mzJE0wIEMX23MNZk',
@@ -13,17 +12,7 @@ const firebaseConfig = {
   measurementId: 'G-7PR9L9EWFP',
 };
 
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 //const analytics = getAnalytics(app);
 
-const auth = getAuth(app);
-
-//Email 로그인
-export const signupEmail = (email, password) => {
-  return createUserWithEmailAndPassword(auth, email, password);
-};
-
-//Email 회원가입
-export const loginEmail = (email, password) => {
-  return signInWithEmailAndPassword(auth, email, password);
-};
+export default app;
