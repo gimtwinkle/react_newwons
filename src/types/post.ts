@@ -4,3 +4,11 @@ export interface Post {
   category: string;
   timeStamp: string;
 }
+
+export interface PostCardProps {
+  thumbnail: string;
+  title: string;
+  author: string;
+  category: string;
+  timeStamp: string;
+}

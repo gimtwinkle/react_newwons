@@ -80,6 +80,8 @@ const PostInfoGroup = () => {
     setPostData(newPost);
   };
 
+  console.log(updatePost);
+
   return (
     <>
       <PostBreadCrumb>
