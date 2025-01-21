@@ -47,7 +47,7 @@ const PostCardContainer = styled.article`
   position: relative;
   width: 516px;
   height: 656px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 `;
 
@@ -57,6 +57,9 @@ const Thumbnail = styled.div`
     box-shadow: 1px solid var(--foreground-rgb) inset;
     border-radius: 8px 8px 0 0;
     object-fit: cover;
+    &:hover {
+      opacity: 0.85;
+    }
   }
 `;
 
