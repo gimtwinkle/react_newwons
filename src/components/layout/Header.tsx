@@ -47,7 +47,7 @@ const Item = styled.li`
     <HeaderBox>
 
       <Logo>
-        <Link href={'#none'}>
+        <Link href={'/'}>
           <Image src={img_logo} alt="logo" />
         </Link>
       </Logo>
