@@ -41,20 +41,16 @@ const DummyList = [
 export const PostCardList = () => {
   return (
     <ListContainer>
-      {DummyList.map((card, index) =>
-        typeof window !== 'undefined' ? (
-          <PostCard
-            key={index}
-            thumbnail={card.thumbnail}
-            title={card.title}
-            author={card.author}
-            category={card.category}
-            timeStamp={card.timeStamp}
-          />
-        ) : (
-          ''
-        ),
-      )}
+      {DummyList.map((card, index) => (
+        <PostCard
+          key={index}
+          thumbnail={card.thumbnail}
+          title={card.title}
+          author={card.author}
+          category={card.category}
+          timeStamp={card.timeStamp}
+        />
+      ))}
     </ListContainer>
   );
 };
