@@ -1,7 +1,8 @@
 'use client';
 import img_logo from '@/assets/images/google_logo.png';
-import { isLoggedIn, logout } from '@/utils/auth';
-import { getAuth } from 'firebase/auth';
+import app from '@/firebase';
+import { logout } from '@/utils/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -47,23 +48,26 @@ const Item = styled.li`
 
 const Header = () => {
   const [isLogged, setIsLogged] = useState(false);
+  const [userName, setUserName] = useState('');
 
-  //로그인 상태 체크
   useEffect(() => {
-    const checkLoginStatus = () => {
-      const loggedIn = isLoggedIn();
-      setIsLogged(loggedIn);
-    };
-    checkLoginStatus();
+    const auth = getAuth(app);
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLogged(true);
+        setUserName(`${user.displayName}`);
+      } else {
+        setIsLogged(false);
+        setUserName('');
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  //로그인 상태 체크 -> 버튼명 변경
   const loginButtonText = isLogged ? 'LOGOUT' : 'LOGIN';
 
-  //로그인 상태 체크 -> 사용자 표시
-  const userName = isLogged ? getAuth().currentUser?.displayName : '';
-
-  //로그인 상태 체크 -> 클릭함수
   const handleAuthRedirect = () => {
     if (isLogged) {
       logout();
@@ -75,7 +79,7 @@ const Header = () => {
 
   return (
     <HeaderBox>
-      <span>로그인한 사람 {userName}</span>
+      <span>{isLogged ? `로그인한 사용자: ${userName}` : '로그인하지 않음'}</span>
       <Logo>
         <Link href={'/'}>
           <Image src={img_logo} alt="logo" />
@@ -87,7 +91,7 @@ const Header = () => {
             <button onClick={handleAuthRedirect}>{loginButtonText}</button>
           </Item>
           <Item>
-            <Link href={'#none'}>Menu</Link>
+            <Link href={'/posts/create'}>작성하기</Link>
           </Item>
           <Item>
             <Link href={'#none'}>Menu</Link>
@@ -97,4 +101,5 @@ const Header = () => {
     </HeaderBox>
   );
 };
+
 export default Header;
