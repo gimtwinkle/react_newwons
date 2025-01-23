@@ -3,6 +3,7 @@ import Header from '@/components/layout/Header';
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
 import './globals.css';
+import StyledComponentsRegistry from './lib/registry';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -22,9 +23,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ko">
       <head></head>
       <body className={`${montserrat.className}`}>
-        <Header />
-        {children}
-        <Footer />
+        <StyledComponentsRegistry>
+          <Header />
+          {children}
+          <Footer />
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
