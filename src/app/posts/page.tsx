@@ -1,3 +1,5 @@
+'use client';
+
 import { PostCardList } from '@/components/feature/PostCardList';
 import Link from 'next/link';
 
@@ -5,7 +7,7 @@ const Posts = () => {
   return (
     <>
       <div>
-        리스트 페이지가 출력될 예정이며 리스트 페이지가 메인화면이 됩니다.
+        {/* 리스트 페이지가 출력될 예정이며 리스트 페이지가 메인화면이 됩니다. */}
         <PostCardList />
       </div>
 
