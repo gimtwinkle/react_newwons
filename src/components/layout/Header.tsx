@@ -1,6 +1,6 @@
 'use client';
 import img_logo from '@/assets/images/google_logo.png';
-import { isLoggedIn } from '@/utils/auth';
+import { isLoggedIn, logout } from '@/utils/auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -57,6 +57,14 @@ const Header = () => {
 
   const loginButtonText = isLogged ? 'LOGOUT' : 'LOGIN';
 
+  const handleAuthRedirect = () => {
+    if (isLogged) {
+      logout();
+      setIsLogged(false);
+    } else {
+      window.location.href = '/posts/login';
+    }
+  };
   return (
     <HeaderBox>
       <Logo>
@@ -68,7 +76,7 @@ const Header = () => {
       <Nav>
         <List>
           <Item>
-            <Link href={'/posts/login'}>{loginButtonText}</Link>
+            <button onClick={handleAuthRedirect}>{loginButtonText}</button>
           </Item>
           <Item>
             <Link href={'#none'}>Menu</Link>

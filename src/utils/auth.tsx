@@ -4,13 +4,13 @@ import {
   GoogleAuthProvider,
   setPersistence,
   signInWithPopup,
+  signOut,
 } from 'firebase/auth';
 import app from './../firebase';
 
-//구글 로그인,
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-
+//로그인(구글)
 provider.addScope('https://www.googleapis.com/auth/userinfo.email');
 export const googleAuth = () => {
   setPersistence(auth, browserSessionPersistence)
@@ -30,6 +30,18 @@ export const googleAuth = () => {
     });
 };
 
+//로그아웃(구글)
+export const logout = () => {
+  signOut(auth)
+    .then(() => {
+      alert('또 오세요!');
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+//로그인 여부 체크
 export const isLoggedIn = () => {
   if (sessionStorage.length) {
     return true;
