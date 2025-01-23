@@ -1,8 +1,10 @@
 'use client';
-import img_logo from "@/assets/images/google_logo.png";
-import Image from "next/image";
-import Link from "next/link";
-import styled from "styled-components";
+import img_logo from '@/assets/images/google_logo.png';
+import { isLoggedIn } from '@/utils/auth';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 const HeaderBox = styled.div`
   display: flex;
@@ -20,32 +22,43 @@ const Logo = styled.div`
 `;
 
 const Nav = styled.nav`
-  display:flex;
+  display: flex;
   justify-content: center;
 `;
 
-const List = styled.ul`;
+const List = styled.ul`
   display: flex;
   align-items: center;
   gap: 55px;
-  list-style:none;
+  list-style: none;
 `;
 
 const Item = styled.li`
-  list-style:none;
+  list-style: none;
   font-size: 15px;
   font-weight: 500;
-  color: #18A0FB;
+  color: #18a0fb;
 
   a:hover {
     text-decoration: underline;
   }
 `;
 
- const Header = () => {
+const Header = () => {
+  const [isLogged, setIsLogged] = useState(false);
+
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const loggedIn = isLoggedIn();
+      setIsLogged(loggedIn);
+    };
+    checkLoginStatus();
+  }, []);
+
+  const loginButtonText = isLogged ? 'LOGOUT' : 'LOGIN';
+
   return (
     <HeaderBox>
-
       <Logo>
         <Link href={'/'}>
           <Image src={img_logo} alt="logo" />
@@ -54,12 +67,17 @@ const Item = styled.li`
 
       <Nav>
         <List>
-          <Item><Link href={'#none'}>Menu</Link></Item>
-          <Item><Link href={'#none'}>Menu</Link></Item>
-          <Item><Link href={'#none'}>Menu</Link></Item>
+          <Item>
+            <Link href={'/posts/login'}>{loginButtonText}</Link>
+          </Item>
+          <Item>
+            <Link href={'#none'}>Menu</Link>
+          </Item>
+          <Item>
+            <Link href={'#none'}>Menu</Link>
+          </Item>
         </List>
       </Nav>
-
     </HeaderBox>
   );
 };

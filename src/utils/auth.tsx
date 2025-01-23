@@ -19,7 +19,7 @@ export const googleAuth = () => {
         .then((result) => {
           const name = result.user.displayName;
           alert(`${name}님! 안녕하세요!`);
-          //   window.location.href = '/';
+          window.location.href = '/';
         })
         .catch((error) => {
           console.log(error);
@@ -31,13 +31,9 @@ export const googleAuth = () => {
 };
 
 export const isLoggedIn = () => {
-  const auth = getAuth(app);
-  const user = auth.currentUser;
-  if (user) {
-    console.log('로그인상태');
+  if (sessionStorage.length) {
     return true;
   } else {
-    console.log('로그인안상태');
     return false;
   }
 };
