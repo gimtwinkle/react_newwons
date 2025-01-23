@@ -1,0 +1,12 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: calc((100% - 424px) / 2);
+}
+.lottie {
+  display: block;
+  width: 180px;
+  height: 180px;
+}
