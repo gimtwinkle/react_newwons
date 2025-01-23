@@ -1,6 +1,7 @@
 'use client';
 import img_logo from '@/assets/images/google_logo.png';
-import { isLoggedIn, logout, userData } from '@/utils/auth';
+import { isLoggedIn, logout } from '@/utils/auth';
+import { getAuth } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -60,8 +61,7 @@ const Header = () => {
   const loginButtonText = isLogged ? 'LOGOUT' : 'LOGIN';
 
   //로그인 상태 체크 -> 사용자 표시
-
-  const userName = isLogged ? userData?.displayName : '';
+  const userName = isLogged ? getAuth().currentUser?.displayName : '';
 
   //로그인 상태 체크 -> 클릭함수
   const handleAuthRedirect = () => {
