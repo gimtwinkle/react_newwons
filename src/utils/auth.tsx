@@ -49,3 +49,6 @@ export const isLoggedIn = () => {
     return false;
   }
 };
+
+//로그인 사용자 이름
+export const userData = auth.currentUser;

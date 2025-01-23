@@ -1,6 +1,6 @@
 'use client';
 import img_logo from '@/assets/images/google_logo.png';
-import { isLoggedIn, logout } from '@/utils/auth';
+import { isLoggedIn, logout, userData } from '@/utils/auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -47,6 +47,7 @@ const Item = styled.li`
 const Header = () => {
   const [isLogged, setIsLogged] = useState(false);
 
+  //로그인 상태 체크
   useEffect(() => {
     const checkLoginStatus = () => {
       const loggedIn = isLoggedIn();
@@ -55,8 +56,14 @@ const Header = () => {
     checkLoginStatus();
   }, []);
 
+  //로그인 상태 체크 -> 버튼명 변경
   const loginButtonText = isLogged ? 'LOGOUT' : 'LOGIN';
 
+  //로그인 상태 체크 -> 사용자 표시
+
+  const userName = isLogged ? userData?.displayName : '';
+
+  //로그인 상태 체크 -> 클릭함수
   const handleAuthRedirect = () => {
     if (isLogged) {
       logout();
@@ -65,14 +72,15 @@ const Header = () => {
       window.location.href = '/posts/login';
     }
   };
+
   return (
     <HeaderBox>
+      <span>로그인한 사람 {userName}</span>
       <Logo>
         <Link href={'/'}>
           <Image src={img_logo} alt="logo" />
         </Link>
       </Logo>
-
       <Nav>
         <List>
           <Item>
