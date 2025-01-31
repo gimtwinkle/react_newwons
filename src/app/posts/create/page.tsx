@@ -28,16 +28,17 @@ const Create = () => {
     setPostContent(e.target.value);
   };
 
-  function handleClickCreatePosts() {
+  async function handleClickCreatePosts() {
     try {
-      const docRef = addDoc(collection(db, 'newwons'), {
+      await addDoc(collection(db, 'newwons'), {
         postTitle,
         postContent,
       });
       alert(`등록되었습니다.`);
-      window.location.href = `/posts/detail`;
+      // window.location.href = `/posts/detail`;
     } catch (error) {
-      alert(`${error}가 발생했습니다.`);
+      console;
+      alert(`에러가 발생했습니다. 에러내용 : ${error}`);
     }
   }
 
