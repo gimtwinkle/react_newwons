@@ -43,9 +43,10 @@ export const logout = () => {
 
 //로그인 여부 체크
 export const isLoggedIn = () => {
-  if (sessionStorage.length) {
-    return true;
-  } else {
+  const user = auth.currentUser;
+  if (!user) {
     return false;
+  } else {
+    return true;
   }
 };
