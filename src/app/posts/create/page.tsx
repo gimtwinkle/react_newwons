@@ -1,9 +1,12 @@
 import { Button } from '@/components/common/Button';
-import { Input } from '@/components/common/Input';
+import Input from '@/components/common/Input';
 const Create = () => {
   return (
     <div>
-      <Input />
+      <div>
+        <Input type="" />
+      </div>
+
       <br></br>
       <Button />
     </div>
