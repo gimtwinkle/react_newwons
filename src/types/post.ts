@@ -1,5 +1,6 @@
 export interface Post {
-  title: string;
+  postTitle: string;
+  postContent: string;
   author: string;
   category: string;
   timeStamp: string;
@@ -7,7 +8,8 @@ export interface Post {
 
 export interface PostCardProps {
   thumbnail: string;
-  title: string;
+  postTitle: string;
+  postContent: string;
   author: string;
   category: string;
   timeStamp: string;

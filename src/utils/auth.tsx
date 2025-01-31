@@ -1,3 +1,4 @@
+import { app } from '@/firebase';
 import {
   browserSessionPersistence,
   getAuth,
@@ -6,7 +7,6 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
-import app from './../firebase';
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();

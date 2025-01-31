@@ -1,6 +1,6 @@
 'use client';
 import img_logo from '@/assets/images/google_logo.png';
-import app from '@/firebase';
+import { app } from '@/firebase';
 import { logout } from '@/utils/auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Image from 'next/image';
