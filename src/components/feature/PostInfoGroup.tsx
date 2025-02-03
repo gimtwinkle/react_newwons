@@ -70,7 +70,7 @@ const PostInfo = styled.ul`
 
 const PostInfoGroup = () => {
   const [postData, setPostData] = useState<Post>({
-    title: 'Post Title',
+    postTitle: 'Post Title',
     author: 'Author',
     category: 'Category',
     timeStamp: 'a min ago',
@@ -89,10 +89,10 @@ const PostInfoGroup = () => {
           <Link href="/">Home</Link>
         </li>
         <li>
-          <Link href="/post/detail">{postData.title}</Link>
+          <Link href="/post/detail">{postData.postTitle}</Link>
         </li>
       </PostBreadCrumb>
-      <PostTitle>{postData.title}</PostTitle>
+      <PostTitle>{postData.postTitle}</PostTitle>
       <PostInfo>
         <li className="lightBlue">{postData.author}</li>
         <li className="blue">{postData.category}</li>

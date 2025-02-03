@@ -4,7 +4,7 @@ const Create = () => {
   return (
     <div>
       <div>
-        <Input type="" />
+        <Input type="text" />
       </div>
 
       <br></br>
