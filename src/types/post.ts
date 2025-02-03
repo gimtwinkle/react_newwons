@@ -9,7 +9,7 @@ export interface Post {
 export interface PostCardProps {
   thumbnail: string;
   postTitle: string;
-  postContent: string;
+  postContent?: string;
   author: string;
   category: string;
   timeStamp: string;
