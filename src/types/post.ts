@@ -14,3 +14,12 @@ export interface PostCardProps {
   category: string;
   timeStamp: string;
 }
+
+export interface PostInfoProps {
+  title: string;
+  content?: string;
+  author: string;
+  category: string;
+  timeStamp: string;
+  href: string;
+}

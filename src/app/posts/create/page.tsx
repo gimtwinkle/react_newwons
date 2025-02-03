@@ -5,23 +5,13 @@ import Input from '@/components/common/Input';
 import { db } from '@/firebase';
 import { isLoggedIn } from '@/utils/auth';
 import { addDoc, collection } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import styled from 'styled-components';
+import PostInfoGroup from '@/components/feature/PostInfoGroup';
 import styles from './page.module.css';
 
-const TextArea = styled.textarea`
-  width: 100%;
-  font-size: 15px;
-  border-radius: 0.4px;
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #000000;
-`;
-
 const Create = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
   const [postTitle, setPostTitle] = useState('');
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +21,10 @@ const Create = () => {
   const [postContent, setPostContent] = useState('');
   const handleChangeTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPostContent(e.target.value);
+  };
+
+  const handleChangeFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let fileName = document.querySelector('.fileName')?.innerHTML('e.target.value');
   };
 
   async function handleClickCreatePosts() {
@@ -57,13 +51,35 @@ const Create = () => {
 
   return (
     <div className={styles.createPostForm}>
-      <div>
+      <PostInfoGroup
+        title="Write"
+        category="category"
+        author="author"
+        timeStamp="a minutes ago"
+        href=""
+      />
+
+      <div className={styles.formArea}>
         <Input type="text" value={postTitle} onChange={handleChangeInput} />
-        <TextArea rows={30} value={postContent} onChange={handleChangeTextarea} />
+        <textarea
+          rows={30}
+          value={postContent}
+          onChange={handleChangeTextarea}
+          className={styles.textArea}
+        />
+
+        <div className={styles.fileBox}>
+          <input className={styles.fileName} value="첨부파일" placeholder="첨부파일" />
+          <label className={styles.fileButtonRole} htmlFor="file">
+            파일찾기
+          </label>
+          <input type="file" id="file" onChange={handleChangeFileUpload} />
+        </div>
       </div>
 
       <button onClick={handleClickCreatePosts}>작성하기 임시버튼</button>
       <br />
+
       <Button />
     </div>
   );

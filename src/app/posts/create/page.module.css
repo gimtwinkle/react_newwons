@@ -1,4 +1,50 @@
 .createPostForm {
   width: 1000px;
-  margin: 0 auto;
+  margin: 40px auto 0;
+}
+.textArea {
+  width: 100%;
+  font-size: 15px;
+  border-radius: 0.4px;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #000000;
+}
+.formArea {
+  margin-top: 50px;
+}
+.fileBox {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-top: 20px;
+}
+.fileName {
+  display: inline-block;
+  height: 40px;
+  padding: 0 10px;
+  vertical-align: middle;
+  border: 1px solid #000000;
+  width: 100%;
+  color: #000;
+}
+.fileButtonRole {
+  display: inline-block;
+  padding: 10px 20px;
+  color: #fff;
+  vertical-align: middle;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  cursor: pointer;
+  height: 40px;
+  margin-left: 10px;
+  width: 133px;
+}
+.blind {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
 }

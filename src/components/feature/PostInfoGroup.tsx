@@ -1,7 +1,6 @@
 'use client';
-import { Post } from '@/types/post';
+import { PostInfoProps } from '@/types/post';
 import Link from 'next/link';
-import { useState } from 'react';
 import styled from 'styled-components';
 
 const PostBreadCrumb = styled.ul`
@@ -68,21 +67,7 @@ const PostInfo = styled.ul`
   }
 `;
 
-const PostInfoGroup = () => {
-  const [postData, setPostData] = useState<Post>({
-    postTitle: 'Post Title',
-    postContent: '',
-    author: 'Author',
-    category: 'Category',
-    timeStamp: 'a min ago',
-  });
-
-  const updatePost = (newPost: Post) => {
-    setPostData(newPost);
-  };
-
-  console.log(updatePost);
-
+export const PostInfoGroup = ({ title, author, category, timeStamp, href }: PostInfoProps) => {
   return (
     <>
       <PostBreadCrumb>
@@ -90,14 +75,14 @@ const PostInfoGroup = () => {
           <Link href="/">Home</Link>
         </li>
         <li>
-          <Link href="/post/detail">{postData.postTitle}</Link>
+          <Link href={href}>{title}</Link>
         </li>
       </PostBreadCrumb>
-      <PostTitle>{postData.postTitle}</PostTitle>
+      <PostTitle>{title}</PostTitle>
       <PostInfo>
-        <li className="lightBlue">{postData.author}</li>
-        <li className="blue">{postData.category}</li>
-        <li>{postData.timeStamp}</li>
+        <li className="lightBlue">{author}</li>
+        <li className="blue">{category}</li>
+        <li>{timeStamp}</li>
       </PostInfo>
     </>
   );
