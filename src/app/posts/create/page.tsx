@@ -7,6 +7,7 @@ import { isLoggedIn } from '@/utils/auth';
 import { addDoc, collection } from 'firebase/firestore';
 import { useState } from 'react';
 
+import { useRouter } from 'next/navigation';
 import styled from 'styled-components';
 import styles from './page.module.css';
 
@@ -20,7 +21,7 @@ const TextArea = styled.textarea`
 `;
 
 const Create = () => {
-  // const router = useRouter();
+  const router = useRouter();
 
   const [postTitle, setPostTitle] = useState('');
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +40,7 @@ const Create = () => {
       }
       if (!isLoggedIn()) {
         alert('로그인 후에만 작성이 가능합니다.');
+        router.push('/posts/login');
         return;
       }
 
@@ -48,7 +50,6 @@ const Create = () => {
       });
 
       alert(`등록되었습니다.`);
-      // router.push('/posts/detail');
     } catch (error) {
       alert(`${error}`);
     }
