@@ -3,8 +3,11 @@ import { Button } from '@/components/common/Button';
 import Input from '@/components/common/Input';
 
 import { db } from '@/firebase';
+import { isLoggedIn } from '@/utils/auth';
 import { addDoc, collection } from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+
 import styled from 'styled-components';
 import styles from './page.module.css';
 
@@ -18,6 +21,8 @@ const TextArea = styled.textarea`
 `;
 
 const Create = () => {
+  const router = useRouter();
+
   const [postTitle, setPostTitle] = useState('');
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostTitle(e.target.value);
@@ -28,16 +33,25 @@ const Create = () => {
     setPostContent(e.target.value);
   };
 
-  function handleClickCreatePosts() {
+  async function handleClickCreatePosts() {
     try {
-      const docRef = addDoc(collection(db, 'newwons'), {
+      if (!postTitle || !postContent) {
+        throw new Error('제목과 내용을 입력해야 합니다.');
+      }
+      if (!isLoggedIn()) {
+        alert('로그인 후에만 작성이 가능합니다.');
+        return;
+      }
+
+      await addDoc(collection(db, 'newwons'), {
         postTitle,
         postContent,
       });
+
       alert(`등록되었습니다.`);
-      window.location.href = `/posts/detail`;
+      // router.push('/posts/detail');
     } catch (error) {
-      alert(`${error}가 발생했습니다.`);
+      alert(`${error}`);
     }
   }
 
