@@ -5,7 +5,6 @@ import Input from '@/components/common/Input';
 import { db } from '@/firebase';
 import { isLoggedIn } from '@/utils/auth';
 import { addDoc, collection } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import styled from 'styled-components';
@@ -21,7 +20,7 @@ const TextArea = styled.textarea`
 `;
 
 const Create = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
   const [postTitle, setPostTitle] = useState('');
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {

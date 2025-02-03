@@ -71,6 +71,7 @@ const PostInfo = styled.ul`
 const PostInfoGroup = () => {
   const [postData, setPostData] = useState<Post>({
     postTitle: 'Post Title',
+    postContent: '',
     author: 'Author',
     category: 'Category',
     timeStamp: 'a min ago',
