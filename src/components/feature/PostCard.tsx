@@ -9,7 +9,7 @@ export const PostCard = ({
   postTitle = 'Post Title',
   author = 'Author',
   category = 'Category',
-  timeStamp = 'a min ago',
+  timestamp = 'a min ago',
 }: PostCardProps) => {
   return (
     <PostCardContainer>
@@ -25,7 +25,7 @@ export const PostCard = ({
             </a>
             <Meta>
               <span className="author">{author}</span>
-              <span className="timeStamp">{timeStamp}</span>
+              <span className="timeStamp">{timestamp}</span>
             </Meta>
           </TitleContent>
           <div className="category">{category}</div>
