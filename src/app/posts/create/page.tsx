@@ -9,6 +9,7 @@ import { useState } from 'react';
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
 import { isLoggedIn, useUserName } from '@/utils/auth';
 import { getCurrentTime } from '@/utils/date';
+
 import styles from './page.module.css';
 
 const Create = () => {
@@ -43,6 +44,7 @@ const Create = () => {
       }
       if (!isLogged) {
         alert('로그인 후에만 작성이 가능합니다.');
+        // router.push('/posts/login');
         return;
       }
 
@@ -55,7 +57,6 @@ const Create = () => {
       });
 
       alert(`등록되었습니다.`);
-      // router.push('/posts/detail');
     } catch (error) {
       alert(`${error}`);
     }

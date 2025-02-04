@@ -9,27 +9,29 @@ export const PostCard = ({
   postTitle = 'Post Title',
   author = 'Author',
   category = 'Category',
-  timeStamp = 'a min ago',
+  timestamp = 'a min ago',
 }: PostCardProps) => {
   return (
     <PostCardContainer>
-      <Thumbnail>
+      <Thumbnail href="/posts/detail">
         <Image src={thumbnail} alt="thumbnail" width={514} height={400} />
       </Thumbnail>
 
       <PostInfo>
         <TitleArea>
           <TitleContent>
-            <p className="title">{postTitle}</p>
+            <a href="/posts/detail" className="title">
+              {postTitle}
+            </a>
             <Meta>
               <span className="author">{author}</span>
-              <span className="timeStamp">{timeStamp}</span>
+              <span className="timeStamp">{timestamp}</span>
             </Meta>
           </TitleContent>
           <div className="category">{category}</div>
         </TitleArea>
 
-        <Content>
+        <Content href="/posts/detail">
           Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
           consequuntur.
         </Content>
@@ -51,7 +53,7 @@ const PostCardContainer = styled.article`
   border-radius: 10px;
 `;
 
-const Thumbnail = styled.div`
+const Thumbnail = styled.a`
   img {
     display: block;
     box-shadow: 1px solid var(--foreground-rgb) inset;
@@ -114,13 +116,14 @@ const Meta = styled.div`
   }
 `;
 
-const Content = styled.div`
+const Content = styled.a`
   width: 100%;
   font-size: 18px;
   line-height: 2rem;
   ${truncateText}
   display: -webkit-box !important;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 3;import { Link } from "next/link";
+
   -webkit-box-orient: vertical;
   white-space: normal;
 `;
