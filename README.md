@@ -1,5 +1,20 @@
 # react_newwons
 
+## 현재 진행상황
+[x] 로그인
+
+[x] 포스트 쓰기 (C)
+
+[] 포스트 읽기 (R)
+  + 상세페이지
+  + 리스트 페이지
+
+[] 포스트 수정 (U)
+
+[] 포스트 삭제 (D)
+
+
+
 ## site
 
 https://react-newwons.vercel.app/
