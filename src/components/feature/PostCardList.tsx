@@ -56,7 +56,7 @@ export const PostCardList = () => {
           postTitle={card.postTitle}
           author={card.author}
           category={card.category}
-          timeStamp={card.timeStamp}
+          timestamp={card.timeStamp}
         />
       ))}
     </ListContainer>
