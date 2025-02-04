@@ -1,6 +1,6 @@
 'use client';
 import img_logo from '@/assets/images/google_logo.png';
-import { getUserName, logout } from '@/utils/auth';
+import { isLoggedIn, logout, useUserName } from '@/utils/auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -44,14 +44,14 @@ const Item = styled.li`
 `;
 
 const Header = () => {
-  getUserName();
-
-  const loginButtonText = getUserName().isLogged ? 'LOGOUT' : 'LOGIN';
+  const currentUser = isLoggedIn();
+  let { isLogged, userName } = useUserName({ currentUser });
+  const loginButtonText = isLogged ? 'LOGOUT' : 'LOGIN';
 
   const handleAuthRedirect = () => {
-    if (getUserName().isLogged) {
+    if (isLogged) {
       logout();
-      getUserName().isLogged == false;
+      isLogged = false;
     } else {
       window.location.href = '/posts/login';
     }
@@ -59,9 +59,7 @@ const Header = () => {
 
   return (
     <HeaderBox>
-      <span>
-        {getUserName().isLogged ? `로그인한 사용자: ${getUserName().userName}` : '로그인하지 않음'}
-      </span>
+      <span>{isLogged ? `로그인한 사용자: ${userName}` : '로그인하지 않음'}</span>
       <Logo>
         <Link href={'/'}>
           <Image src={img_logo} alt="logo" />

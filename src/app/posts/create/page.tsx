@@ -7,36 +7,42 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useState } from 'react';
 
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
-import { getUserName } from '@/utils/auth';
+import { isLoggedIn, useUserName } from '@/utils/auth';
 import { getCurrentTime } from '@/utils/date';
 import styles from './page.module.css';
 
 const Create = () => {
-  getUserName();
+  //현재 로그인상태 체크 후 username 가져오기
+  const currentUser = isLoggedIn();
+  let { isLogged, userName } = useUserName({ currentUser });
+  useUserName({ currentUser });
 
+  //포스트 타이틀 상태관리
   const [postTitle, setPostTitle] = useState('');
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostTitle(e.target.value);
   };
 
+  //포스트 컨텐츠 상태관리
   const [postContent, setPostContent] = useState('');
   const handleChangeTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPostContent(e.target.value);
   };
 
+  //포스트 업로드파일 상태관리
   const [postFile, setPostFile] = useState('');
   const handleChangeFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostFile(e.target.value);
   };
 
+  //data post
   async function handleClickCreatePosts() {
     try {
       if (!postTitle || !postContent) {
         throw new Error('제목과 내용을 입력해야 합니다.');
       }
-      if (!getUserName().isLogged) {
+      if (!isLogged) {
         alert('로그인 후에만 작성이 가능합니다.');
-        console.log();
         return;
       }
 
@@ -44,7 +50,7 @@ const Create = () => {
         postTitle,
         postContent,
         postFile,
-        userName: getUserName().userName,
+        userName,
         timestamp: serverTimestamp(),
       });
 
@@ -60,7 +66,7 @@ const Create = () => {
       <PostInfoGroup
         title="Write"
         category="category"
-        author={getUserName().userName}
+        author={userName}
         timestamp={`${getCurrentTime()}`}
         href=""
       />

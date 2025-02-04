@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+
 //로그인(구글)
 provider.addScope('https://www.googleapis.com/auth/userinfo.email');
 export const googleAuth = () => {
@@ -53,8 +54,8 @@ export const isLoggedIn = () => {
   }
 };
 
-//사용자 계정 중 이름 가져오기
-export const getUserName = () => {
+//로그인 상태 체크 후 사용자이름 가져오기
+export const useUserName = ({ currentUser }: { currentUser: boolean }) => {
   const [isLogged, setIsLogged] = useState(false);
   const [userName, setUserName] = useState('unknown');
 
@@ -68,7 +69,6 @@ export const getUserName = () => {
         setUserName('unknown');
       }
     });
-
     return () => unsubscribe();
   }, []);
 
