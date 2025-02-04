@@ -67,7 +67,7 @@ const PostInfo = styled.ul`
   }
 `;
 
-export const PostInfoGroup = ({ title, author, category, timeStamp, href }: PostInfoProps) => {
+export const PostInfoGroup = ({ title, author, category, timestamp, href }: PostInfoProps) => {
   return (
     <>
       <PostBreadCrumb>
@@ -82,7 +82,7 @@ export const PostInfoGroup = ({ title, author, category, timeStamp, href }: Post
       <PostInfo>
         <li className="lightBlue">{author}</li>
         <li className="blue">{category}</li>
-        <li>{timeStamp}</li>
+        <li>{timestamp}</li>
       </PostInfo>
     </>
   );

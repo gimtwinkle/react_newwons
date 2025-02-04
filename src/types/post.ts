@@ -3,7 +3,7 @@ export interface Post {
   postContent: string;
   author: string;
   category: string;
-  timeStamp: string;
+  timestamp: string;
 }
 
 export interface PostCardProps {
@@ -12,7 +12,7 @@ export interface PostCardProps {
   postContent: string;
   author: string;
   category: string;
-  timeStamp: string;
+  timestamp: string;
 }
 
 export interface PostInfoProps {
@@ -20,6 +20,6 @@ export interface PostInfoProps {
   content?: string;
   author: string;
   category: string;
-  timeStamp: string;
+  timestamp: string;
   href: string;
 }
