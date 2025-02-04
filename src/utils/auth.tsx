@@ -3,10 +3,12 @@ import {
   browserSessionPersistence,
   getAuth,
   GoogleAuthProvider,
+  onAuthStateChanged,
   setPersistence,
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
+import { useEffect, useState } from 'react';
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -49,4 +51,26 @@ export const isLoggedIn = () => {
   } else {
     return true;
   }
+};
+
+//사용자 계정 중 이름 가져오기
+export const getUserName = () => {
+  const [isLogged, setIsLogged] = useState(false);
+  const [userName, setUserName] = useState('unknown');
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLogged(true);
+        setUserName(user.displayName || 'unknown');
+      } else {
+        setIsLogged(false);
+        setUserName('unknown');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  return { isLogged, userName };
 };

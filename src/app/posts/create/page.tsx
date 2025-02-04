@@ -2,34 +2,17 @@
 import { Button } from '@/components/common/Button';
 import Input from '@/components/common/Input';
 
-import { app, db } from '@/firebase';
+import { db } from '@/firebase';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
+import { getUserName } from '@/utils/auth';
 import { getCurrentTime } from '@/utils/date';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import styles from './page.module.css';
 
 const Create = () => {
-  const [isLogged, setIsLogged] = useState(false);
-  const [author, setAuthor] = useState('unknown');
-
-  useEffect(() => {
-    const auth = getAuth(app);
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsLogged(true);
-        setAuthor(`${user.displayName}`);
-      } else {
-        setIsLogged(false);
-        setAuthor('unknown');
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
+  getUserName();
 
   const [postTitle, setPostTitle] = useState('');
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +34,7 @@ const Create = () => {
       if (!postTitle || !postContent) {
         throw new Error('제목과 내용을 입력해야 합니다.');
       }
-      if (!isLogged) {
+      if (!getUserName().isLogged) {
         alert('로그인 후에만 작성이 가능합니다.');
         console.log();
         return;
@@ -61,7 +44,7 @@ const Create = () => {
         postTitle,
         postContent,
         postFile,
-        author,
+        userName: getUserName().userName,
         timestamp: serverTimestamp(),
       });
 
@@ -77,7 +60,7 @@ const Create = () => {
       <PostInfoGroup
         title="Write"
         category="category"
-        author={author}
+        author={getUserName().userName}
         timestamp={`${getCurrentTime()}`}
         href=""
       />

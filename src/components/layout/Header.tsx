@@ -1,11 +1,8 @@
 'use client';
 import img_logo from '@/assets/images/google_logo.png';
-import { app } from '@/firebase';
-import { logout } from '@/utils/auth';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getUserName, logout } from '@/utils/auth';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const HeaderBox = styled.div`
@@ -47,31 +44,14 @@ const Item = styled.li`
 `;
 
 const Header = () => {
-  const [isLogged, setIsLogged] = useState(false);
-  const [userName, setUserName] = useState('');
+  getUserName();
 
-  useEffect(() => {
-    const auth = getAuth(app);
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsLogged(true);
-        setUserName(`${user.displayName}`);
-      } else {
-        setIsLogged(false);
-        setUserName('');
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const loginButtonText = isLogged ? 'LOGOUT' : 'LOGIN';
+  const loginButtonText = getUserName().isLogged ? 'LOGOUT' : 'LOGIN';
 
   const handleAuthRedirect = () => {
-    if (isLogged) {
+    if (getUserName().isLogged) {
       logout();
-      setIsLogged(false);
+      getUserName().isLogged == false;
     } else {
       window.location.href = '/posts/login';
     }
@@ -79,7 +59,9 @@ const Header = () => {
 
   return (
     <HeaderBox>
-      <span>{isLogged ? `로그인한 사용자: ${userName}` : '로그인하지 않음'}</span>
+      <span>
+        {getUserName().isLogged ? `로그인한 사용자: ${getUserName().userName}` : '로그인하지 않음'}
+      </span>
       <Logo>
         <Link href={'/'}>
           <Image src={img_logo} alt="logo" />
