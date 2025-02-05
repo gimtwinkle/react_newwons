@@ -13,11 +13,10 @@ import { getCurrentTime } from '@/utils/date';
 import styles from './page.module.css';
 
 const Update = () => {
-  //1. 읽어오기
   useEffect(() => {
     async function fetchData() {
       try {
-        const docRef = doc(db, 'newwons', 'EL7pwluxJweJ2diUcbGc');
+        const docRef = doc(db, 'newwons', 'EL7pwluxJweJ2diUcbGc'); //현재 문서의 번호를 가져옵니다.
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -25,16 +24,7 @@ const Update = () => {
           setPostContent(docSnap.data().postContent);
           setPostFile(docSnap.data().postFile);
           setAuthor(docSnap.data().userName);
-          if (userName === docSnap.data().userName) {
-            return;
-          } else {
-            alert('작성자만 수정이 가능합니다.');
-            return;
-
-            //TODO 2/5 작성자 일치 할때만 수정 가능하도록 하고 아니면 리스트로 돌아가기 + 수정 내용 포스트
-          }
         } else {
-          // docSnap.data() will be undefined in this case
           console.log('No such document!');
         }
       } catch (error) {
@@ -44,13 +34,13 @@ const Update = () => {
     fetchData();
   }, []);
 
-  //현재 로그인상태 체크 후 username 가져오기
+  //현재 사용자 상태 확인
   const currentUser = isLoggedIn();
-  let { isLogged, userName } = useUserName({ currentUser });
+  let { isLogged } = useUserName({ currentUser });
   useUserName({ currentUser });
 
   //포스트 작성자 상태관리
-  const [author, setAuthor] = useState();
+  const [author, setAuthor] = useState('');
 
   //포스트 타이틀 상태관리
   const [postTitle, setPostTitle] = useState('');
