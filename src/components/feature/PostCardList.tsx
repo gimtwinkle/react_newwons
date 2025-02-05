@@ -10,11 +10,8 @@ const querySnapshot = await getDocs(collection(db, 'newwons'));
 let resultList: any[] = [];
 const result = querySnapshot.forEach((doc) => {
   // console.log(doc.id, ' => ', doc.data());
-  ({
-    param: doc.id
-  });
   resultList = [...resultList, { param: doc.id, ...doc.data() }];
-  console.log(resultList);
+  // console.log(resultList);
 });
 export const PostCardList = ({
   thumbnail,
