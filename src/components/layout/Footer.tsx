@@ -5,7 +5,6 @@ import Link from "next/link";
 import styled from "styled-components";
 
 const FooterBox = styled.div`
-  position: fixed;
   bottom:0;
   display: flex;
   justify-content: space-between;
