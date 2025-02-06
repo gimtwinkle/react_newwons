@@ -1,6 +1,7 @@
 'use client';
 import { db } from '@/firebase';
 import { PostCardProps } from '@/types/post';
+import { convertTimestamp } from '@/utils/date';
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -34,7 +35,7 @@ export const PostCardList = () => {
           postContent: doc.data().postContent,
           author: doc.data().author,
           thumbnail: doc.data().thumbnail,
-          timestamp: `${doc.data().timestamp?.toDate().toLocaleString().toString().slice(0, 20) || ''}`,
+          timestamp: `${convertTimestamp(doc.data().timestamp)}`,
           category: doc.data().category,
         });
       });
