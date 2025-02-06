@@ -66,7 +66,7 @@ export const PostCardList = () => {
 const ListContainer = styled.div`
   width: 1080px;
   margin: auto;
-  padding-top: 20px;
+  padding-top: 84px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

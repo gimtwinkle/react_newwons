@@ -32,7 +32,7 @@ body {
 }
 
 body {
-  margin-top: 64px;
+  /* margin-top: 64px; */
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
 }
