@@ -5,7 +5,7 @@ import { doc, getDoc } from 'firebase/firestore';
 const Detail = async () => {
   //특정 단일 data 가져오기(문서번호는 전체 데이터 가져오는 리스트 쪽에서 확인할 수 있을 것 같아요.)
   try {
-    const docRef = doc(db, 'newwons', `${문서번호}`);
+    const docRef = doc(db, 'newwons');
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
