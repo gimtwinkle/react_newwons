@@ -1,19 +1,20 @@
 'use client';
 import img_logo from '@/assets/images/google_logo.png';
-import { isLoggedIn, logout, useUserName } from '@/utils/auth';
+import Login from '@/components/common/Login';
+import Modal from '@/components/common/Modal';
+import { app } from '@/firebase';
+import { logout } from '@/utils/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const HeaderBox = styled.div`
-  position: fixed;
-  top: 0;
   display: flex;
   justify-content: space-between;
   width: 100%;
   padding: 14px 80px;
-  background: #fff;
-  z-index:10;
 `;
 
 const Logo = styled.div`
@@ -48,16 +49,36 @@ const Item = styled.li`
 `;
 
 const Header = () => {
-  const currentUser = isLoggedIn();
-  let { isLogged, userName } = useUserName({ currentUser });
+  const [isLogged, setIsLogged] = useState(false);
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const auth = getAuth(app);
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLogged(true);
+        setUserName(`${user.displayName}`);
+      } else {
+        setIsLogged(false);
+        setUserName('');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const loginButtonText = isLogged ? 'LOGOUT' : 'LOGIN';
+
+  const [visible, setVisible] = useState(false); //visible변수, 셋터 -> 변수값을 변경하는 함수(기능)
 
   const handleAuthRedirect = () => {
     if (isLogged) {
       logout();
-      isLogged = false;
+      setIsLogged(false);
     } else {
-      window.location.href = '/posts/login';
+      // window.location.href = '/posts/login';
+      setVisible(true); //로그인창 노출
     }
   };
 
@@ -82,6 +103,20 @@ const Header = () => {
           </Item>
         </List>
       </Nav>
+      {/* () => setVisible(false) 값(기능)을 전달해야 하니까  () => 써서 함수라는것을 알려줘야 함, {setVisible(false)} 적으면 void 값이 전달 됨 */}
+      {/* {visible ? (
+        <Modal dimmedClick={() => setVisible(false)}>
+          <p>이곳에 원하는 내용을 넣을 수 있어요!</p>
+        </Modal>
+      ) : (
+        <></>
+      )}   밑에거랑 같은식인데 거짓인데 랜더링 할 게 없을 경우 밑에처럼 간결하게 쓸 수 있음*/}
+
+      {visible && (
+        <Modal dimmedClick={() => setVisible(false)}>
+          <Login />
+        </Modal>
+      )}
     </HeaderBox>
   );
 };
