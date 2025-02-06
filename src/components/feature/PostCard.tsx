@@ -5,22 +5,24 @@ import Image from 'next/image';
 import styled from 'styled-components';
 
 export const PostCard = ({
+  param = '',
   thumbnail = 'https://images.unsplash.com/photo-1513977055326-8ae6272d90a7?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   postTitle = 'Post Title',
   author = 'Author',
   category = 'Category',
   timestamp = 'a min ago',
+  postContent = ''
 }: PostCardProps) => {
   return (
     <PostCardContainer>
-      <Thumbnail href="/posts/detail">
+      <Thumbnail href={"/posts/detail/" + param}>
         <Image src={thumbnail} alt="thumbnail" width={514} height={400} />
       </Thumbnail>
 
       <PostInfo>
         <TitleArea>
           <TitleContent>
-            <a href="/posts/detail" className="title">
+            <a href={"/posts/detail/" + param} className="title">
               {postTitle}
             </a>
             <Meta>
@@ -31,9 +33,8 @@ export const PostCard = ({
           <div className="category">{category}</div>
         </TitleArea>
 
-        <Content href="/posts/detail">
-          Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-          consequuntur.
+        <Content href={"/posts/detail/" + param}>
+          {postContent}
         </Content>
       </PostInfo>
     </PostCardContainer>
@@ -117,7 +118,10 @@ const Meta = styled.div`
 `;
 
 const Content = styled.a`
+  padding-top: 1rem;
   width: 100%;
+  height: 100%;
+  vertical-align: top;
   font-size: 18px;
   line-height: 2rem;
   ${truncateText}

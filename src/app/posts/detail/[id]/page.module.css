@@ -1,0 +1,9 @@
+.postContainer {
+  width: 1000px;
+  margin: 40px auto 0;
+}
+.postContent {
+  margin: 40px 0 80px;
+  width: 100%;
+  font-size: 15px;
+}

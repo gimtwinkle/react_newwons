@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 export const getCurrentTime = (): string => {
   const date = new Date();
 
@@ -8,4 +10,8 @@ export const getCurrentTime = (): string => {
   const minutes = String(date.getHours());
 
   return `${year}.${month}.${day} ${hour}:${minutes}`;
+};
+
+export const convertTimestamp = ({ dateData }: { dateData: Timestamp }) => {
+  dateData.toDate().toLocaleString().toString().slice(0, 20);
 };
