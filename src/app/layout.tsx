@@ -1,3 +1,4 @@
+import Modal from '@/components/common/Modal';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import type { Metadata } from 'next';
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
             <Footer />
           </StyledComponentsRegistry>
+          <Modal></Modal>
         </div>
       </body>
     </html>
