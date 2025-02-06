@@ -1,5 +1,7 @@
 'use client';
 
+import { db } from '@/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 import styled from 'styled-components';
 import { PostCard } from './PostCard';
 
@@ -38,6 +40,12 @@ const DummyList = [
   },
 ];
 
+//등록되어있는 전체 data get(console)
+const querySnapshot = await getDocs(collection(db, 'newwons'));
+querySnapshot.forEach((doc) => {
+  console.log(doc.id, ' => ', doc.data());
+});
+
 export const PostCardList = () => {
   return (
     <ListContainer>
@@ -48,7 +56,7 @@ export const PostCardList = () => {
           postTitle={card.postTitle}
           author={card.author}
           category={card.category}
-          timeStamp={card.timeStamp}
+          timestamp={card.timeStamp}
         />
       ))}
     </ListContainer>
