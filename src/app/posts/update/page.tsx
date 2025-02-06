@@ -3,8 +3,8 @@ import { Button } from '@/components/common/Button';
 import Input from '@/components/common/Input';
 
 import { db } from '@/firebase';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { useState } from 'react';
+import { addDoc, collection, doc, getDoc, serverTimestamp } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
 import { isLoggedIn, useUserName } from '@/utils/auth';
@@ -12,11 +12,35 @@ import { getCurrentTime } from '@/utils/date';
 
 import styles from './page.module.css';
 
-const Create = () => {
-  //현재 로그인상태 체크 후 username 가져오기
+const Update = () => {
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const docRef = doc(db, 'newwons', 'EL7pwluxJweJ2diUcbGc'); //현재 문서의 번호를 가져옵니다.
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setPostTitle(docSnap.data().postTitle);
+          setPostContent(docSnap.data().postContent);
+          setPostFile(docSnap.data().postFile);
+          setAuthor(docSnap.data().userName);
+        } else {
+          console.log('No such document!');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  //현재 사용자 상태 확인
   const currentUser = isLoggedIn();
-  let { isLogged, userName } = useUserName({ currentUser });
+  let { isLogged } = useUserName({ currentUser });
   useUserName({ currentUser });
+
+  //포스트 작성자 상태관리
+  const [author, setAuthor] = useState('');
 
   //포스트 타이틀 상태관리
   const [postTitle, setPostTitle] = useState('');
@@ -52,7 +76,7 @@ const Create = () => {
         postTitle,
         postContent,
         postFile,
-        userName,
+        author,
         timestamp: serverTimestamp(),
       });
 
@@ -67,7 +91,7 @@ const Create = () => {
       <PostInfoGroup
         title="Write"
         category="category"
-        author={userName}
+        author={author}
         timestamp={`${getCurrentTime()}`}
         href=""
       />
@@ -110,4 +134,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Update;
