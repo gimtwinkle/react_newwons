@@ -5,33 +5,36 @@ import Image from 'next/image';
 import styled from 'styled-components';
 
 export const PostCard = ({
+  param = '',
   thumbnail = 'https://images.unsplash.com/photo-1513977055326-8ae6272d90a7?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  title = 'Post Title',
+  postTitle = 'Post Title',
   author = 'Author',
   category = 'Category',
-  timeStamp = 'a min ago',
+  timestamp = 'a min ago',
+  postContent = ''
 }: PostCardProps) => {
   return (
     <PostCardContainer>
-      <Thumbnail>
+      <Thumbnail href={"/posts/" + param}>
         <Image src={thumbnail} alt="thumbnail" width={514} height={400} />
       </Thumbnail>
 
       <PostInfo>
         <TitleArea>
           <TitleContent>
-            <p className="title">{title}</p>
+            <a href={"/posts/" + param} className="title">
+              {postTitle}
+            </a>
             <Meta>
               <span className="author">{author}</span>
-              <span className="timeStamp">{timeStamp}</span>
+              <span className="timeStamp">{timestamp}</span>
             </Meta>
           </TitleContent>
           <div className="category">{category}</div>
         </TitleArea>
 
-        <Content>
-          Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-          consequuntur.
+        <Content href={"/posts/" + param}>
+          {postContent}
         </Content>
       </PostInfo>
     </PostCardContainer>
@@ -51,7 +54,7 @@ const PostCardContainer = styled.article`
   border-radius: 10px;
 `;
 
-const Thumbnail = styled.div`
+const Thumbnail = styled.a`
   img {
     display: block;
     box-shadow: 1px solid var(--foreground-rgb) inset;
@@ -114,13 +117,17 @@ const Meta = styled.div`
   }
 `;
 
-const Content = styled.div`
+const Content = styled.a`
+  padding-top: 1rem;
   width: 100%;
+  height: 100%;
+  vertical-align: top;
   font-size: 18px;
   line-height: 2rem;
   ${truncateText}
   display: -webkit-box !important;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 3;import { Link } from "next/link";
+
   -webkit-box-orient: vertical;
   white-space: normal;
 `;
