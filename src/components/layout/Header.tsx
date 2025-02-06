@@ -6,10 +6,14 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 const HeaderBox = styled.div`
+  position: fixed;
+  top: 0;
   display: flex;
   justify-content: space-between;
   width: 100%;
   padding: 14px 80px;
+  background: #fff;
+  z-index:10;
 `;
 
 const Logo = styled.div`
