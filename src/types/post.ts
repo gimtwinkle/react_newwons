@@ -13,6 +13,7 @@ export interface PostCardProps {
   author: string;
   category: string;
   timestamp: string;
+  param: string;
 }
 
 export interface PostInfoProps {
