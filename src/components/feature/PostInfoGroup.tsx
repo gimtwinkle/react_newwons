@@ -53,6 +53,10 @@ const PostInfo = styled.ul`
     border-right: 1px solid #ddd;
     color: rgba(0, 0, 0, 0.5);
 
+    &:first-child {
+      padding-left: 0;
+    }
+
     &.lightBlue {
       color: #6de4ea;
     }

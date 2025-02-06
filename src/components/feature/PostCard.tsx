@@ -15,14 +15,14 @@ export const PostCard = ({
 }: PostCardProps) => {
   return (
     <PostCardContainer>
-      <Thumbnail href={"/posts/detail/" + param}>
+      <Thumbnail href={"/posts/" + param}>
         <Image src={thumbnail} alt="thumbnail" width={514} height={400} />
       </Thumbnail>
 
       <PostInfo>
         <TitleArea>
           <TitleContent>
-            <a href={"/posts/detail/" + param} className="title">
+            <a href={"/posts/" + param} className="title">
               {postTitle}
             </a>
             <Meta>
@@ -33,7 +33,7 @@ export const PostCard = ({
           <div className="category">{category}</div>
         </TitleArea>
 
-        <Content href={"/posts/detail/" + param}>
+        <Content href={"/posts/" + param}>
           {postContent}
         </Content>
       </PostInfo>
