@@ -2,35 +2,60 @@
 import { db } from '@/firebase';
 import { PostCardProps } from '@/types/post';
 import { collection, getDocs } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { PostCard } from './PostCard';
 
 //등록되어있는 전체 data get(console)
-const querySnapshot = await getDocs(collection(db, 'newwons'));
-let resultList: any[] = [];
-const result = querySnapshot.forEach((doc) => {
-  // console.log(doc.id, ' => ', doc.data());
-  resultList = [...resultList, { param: doc.id, ...doc.data() }];
-  // console.log(resultList);
-});
-export const PostCardList = ({
-  thumbnail,
-  postTitle,
-  author,
-  category,
-  timestamp}: PostCardProps) => {
+// const querySnapshot = await getDocs(collection(db, 'newwons'));
+// let resultList: any[] = [];
+// querySnapshot.forEach((doc) => {
+//   // console.log(doc.id, ' => ', doc.data().timestamp);
+//   resultList = [...resultList, { param: doc.id, ...doc.data() }];
+//   // console.log(resultList);
+//   // const time = doc.data().timestamp;
+//   // console.log('타임스탬프'+doc.data().timestamp);
+//   // const val = Object.values(time);
+//   // console.log('타임스탬프 값'+val);
+// });
+
+export const PostCardList = () => {
+  const [docList, setDocList] = useState<PostCardProps[]>([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const querySnapshot = await getDocs(collection(db, 'newwons'));
+      const posts: PostCardProps[] = [];
+
+      querySnapshot.forEach((doc) => {
+        posts.push({
+          param: doc.id,
+          postTitle: doc.data().postTitle,
+          postContent: doc.data().postContent,
+          author: doc.data().author,
+          thumbnail: doc.data().thumbnail,
+          timestamp: `${doc.data().timestamp?.toDate().toLocaleString().toString().slice(0, 20) || ''}`,
+          category: doc.data().category,
+        });
+      });
+
+      setDocList(posts);
+    };
+
+    fetchPosts();
+  }, []);
   return (
     <ListContainer>
-      {resultList.map((obj, idx) => (
+      {docList.map((post) => (
         <PostCard
-          key={idx}
-          param={obj.param}
-          thumbnail={obj.thumbnail}
-          postTitle={obj.postTitle}
-          author={obj.userName}
-          category={obj.category}
-          timestamp={timestamp}
-          postContent = {obj.postContent}
+          key={post.param}
+          param={post.param}
+          author={post.author}
+          category={post.category}
+          timestamp={post.timestamp}
+          thumbnail={post.thumbnail}
+          postTitle={post.postTitle}
+          postContent={post.postContent}
         />
       ))}
     </ListContainer>
