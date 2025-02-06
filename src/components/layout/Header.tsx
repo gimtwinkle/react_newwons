@@ -1,5 +1,7 @@
 'use client';
 import img_logo from '@/assets/images/google_logo.png';
+import Login from '@/components/common/Login';
+import Modal from '@/components/common/Modal';
 import { app } from '@/firebase';
 import { logout } from '@/utils/auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -68,12 +70,15 @@ const Header = () => {
 
   const loginButtonText = isLogged ? 'LOGOUT' : 'LOGIN';
 
+  const [visible, setVisible] = useState(false); //visible변수, 셋터 -> 변수값을 변경하는 함수(기능)
+
   const handleAuthRedirect = () => {
     if (isLogged) {
       logout();
       setIsLogged(false);
     } else {
-      window.location.href = '/posts/login';
+      // window.location.href = '/posts/login';
+      setVisible(true); //로그인창 노출
     }
   };
 
@@ -98,6 +103,20 @@ const Header = () => {
           </Item>
         </List>
       </Nav>
+      {/* () => setVisible(false) 값(기능)을 전달해야 하니까  () => 써서 함수라는것을 알려줘야 함, {setVisible(false)} 적으면 void 값이 전달 됨 */}
+      {/* {visible ? (
+        <Modal dimmedClick={() => setVisible(false)}>
+          <p>이곳에 원하는 내용을 넣을 수 있어요!</p>
+        </Modal>
+      ) : (
+        <></>
+      )}   밑에거랑 같은식인데 거짓인데 랜더링 할 게 없을 경우 밑에처럼 간결하게 쓸 수 있음*/}
+
+      {visible && (
+        <Modal dimmedClick={() => setVisible(false)}>
+          <Login />
+        </Modal>
+      )}
     </HeaderBox>
   );
 };
