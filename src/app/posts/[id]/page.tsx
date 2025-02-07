@@ -2,6 +2,7 @@
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
 import { db } from '@/firebase';
 import { Post } from '@/types/post';
+import { convertTimestamp } from '@/utils/date';
 import { doc, getDoc } from 'firebase/firestore';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -21,7 +22,7 @@ const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) =
         setLoading(true);
         console.log('params.id 확인:', params, params.id);
 
-        const docRef = doc(db, 'newwons', params.id);
+        const docRef = doc(db, 'newwons', `${params.id}`);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -30,7 +31,7 @@ const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) =
           // 타임스탬프 형식 변환
           const formattedData = {
             ...data,
-            timestamp: data.timestamp?.toDate().toLocaleString() || '',
+            timestamp: convertTimestamp(data.timestamp) || '',
           } as Post;
 
           setPostData(formattedData);
@@ -50,7 +51,6 @@ const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) =
 
   if (loading) return <div>로딩중...🔍</div>;
   if (!postData) return <div>포스트를 찾을 수 없습니다. 🙈</div>;
-  // console.log('postData:', postData);
 
   return (
     <div className={styles.postContainer}>
@@ -59,7 +59,7 @@ const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) =
         category="category"
         author={postData.author}
         timestamp={postData.timestamp}
-        href={params.id}
+        href={`${params.id}`}
       />
       <div className={styles.postContent}>{postData.postContent}</div>
     </div>

@@ -1,4 +1,4 @@
-import { Timestamp } from "firebase/firestore";
+import { Timestamp } from 'firebase/firestore';
 
 export const getCurrentTime = (): string => {
   const date = new Date();
@@ -12,6 +12,18 @@ export const getCurrentTime = (): string => {
   return `${year}.${month}.${day} ${hour}:${minutes}`;
 };
 
-export const convertTimestamp = ( dateData : Timestamp | null | undefined ) => {
-  return dateData ? dateData.toDate().toLocaleString().toString().slice(0, 20) : 'No TimeStamp';
+export const convertTimestamp = (dateData: Timestamp | null | undefined) => {
+  if (!dateData) return '';
+  const date = dateData.toDate();
+
+  const formatter = new Intl.DateTimeFormat('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
+
+  return formatter.format(date);
 };
