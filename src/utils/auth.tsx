@@ -72,5 +72,5 @@ export const useUserName = ({ currentUser }: { currentUser: boolean }) => {
     return () => unsubscribe();
   }, []);
 
-  return { isLogged, userName };
+  return { isLogged, userName, currentUser };
 };

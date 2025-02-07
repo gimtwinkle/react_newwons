@@ -15,7 +15,7 @@ import styles from './page.module.css';
 const Create = () => {
   //현재 로그인상태 체크 후 username 가져오기
   const currentUser = isLoggedIn();
-  let { isLogged, userName } = useUserName({ currentUser });
+  const { isLogged, userName } = useUserName({ currentUser });
   useUserName({ currentUser });
 
   //포스트 타이틀 상태관리

@@ -2,9 +2,7 @@
 import img_logo from '@/assets/images/google_logo.png';
 import Login from '@/components/common/Login';
 import Modal from '@/components/common/Modal';
-import { app } from '@/firebase';
-import { logout } from '@/utils/auth';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { isLoggedIn, logout, useUserName } from '@/utils/auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -53,39 +51,17 @@ const Item = styled.li`
 `;
 
 const Header = () => {
-  const [isLogged, setIsLogged] = useState(false);
-  const [userName, setUserName] = useState('');
+  const currentUser = isLoggedIn();
+  const { isLogged = false, userName } = useUserName({ currentUser });
 
+  const [modalShow, setModalShow] = useState(false);
   useEffect(() => {
-    const auth = getAuth(app);
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsLogged(true);
-        setUserName(`${user.displayName}`);
-      } else {
-        setIsLogged(false);
-        setUserName('');
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const loginButtonText = isLogged ? 'LOGOUT' : 'LOGIN';
-
-  const [visible, setVisible] = useState(false); //visible변수, 셋터 -> 변수값을 변경하는 함수(기능)
-
-  const handleAuthRedirect = () => {
     if (isLogged) {
-      logout();
-      setIsLogged(false);
+      setModalShow(false);
     } else {
-      // window.location.href = '/posts/login';
-      setVisible(true); //로그인창 노출
+      setModalShow(true);
     }
-  };
-
+  }, [isLogged]);
   return (
     <HeaderBox>
       <span>{isLogged ? `로그인한 사용자: ${userName}` : '로그인하지 않음'}</span>
@@ -96,9 +72,7 @@ const Header = () => {
       </Logo>
       <Nav>
         <List>
-          <Item>
-            <button onClick={handleAuthRedirect}>{loginButtonText}</button>
-          </Item>
+          <Item>{isLogged ? <button onClick={logout}>LOGOUT</button> : null}</Item>
           <Item>
             <Link href={'/posts/create'}>작성하기</Link>
           </Item>
@@ -116,8 +90,8 @@ const Header = () => {
         <></>
       )}   밑에거랑 같은식인데 거짓인데 랜더링 할 게 없을 경우 밑에처럼 간결하게 쓸 수 있음*/}
 
-      {visible && (
-        <Modal dimmedClick={() => setVisible(false)}>
+      {modalShow && (
+        <Modal modalVisible={modalShow}>
           <Login />
         </Modal>
       )}
