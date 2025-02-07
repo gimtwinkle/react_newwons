@@ -9,25 +9,34 @@ import { PostCard } from './PostCard';
 
 export const PostCardList = () => {
   const [docList, setDocList] = useState<PostCardProps[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const querySnapshot = await getDocs(collection(db, 'newwons'));
-      const posts: PostCardProps[] = [];
+      try {
+        const querySnapshot = await getDocs(collection(db, 'newwons'));
+        const posts: PostCardProps[] = [];
 
-      querySnapshot.forEach((doc) => {
-        posts.push({
-          param: doc.id,
-          postTitle: doc.data().postTitle,
-          postContent: doc.data().postContent,
-          author: doc.data().author,
-          thumbnail: doc.data().thumbnail,
-          timestamp: `${convertTimestamp(doc.data().timestamp)}`,
-          category: doc.data().category,
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          posts.push({
+            param: doc.id,
+            postTitle: data.postTitle,
+            postContent: data.postContent,
+            author: data.author,
+            thumbnail: data.thumbnail,
+            timestamp: convertTimestamp(data.timestamp),
+            category: data.category,
+          });
         });
-      });
 
-      setDocList(posts);
+        setDocList(posts);
+      } catch (error) {
+        setError('게시글을 가져오는 데 문제가 발생했습니다.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchPosts();

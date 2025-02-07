@@ -26,15 +26,15 @@ const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   const [visible, setVisible] = useState(false);
   const currentLoggedState = isLoggedIn();
-  const { isLogged = false } = useUserInfo({ currentLoggedState }); // Default value to prevent errors
+  const { isLogged = false } = useUserInfo({ currentLoggedState });
 
   useEffect(() => {
     if (!isLogged) {
-      setVisible(true); // Show modal if NOT logged in
+      setVisible(true);
     } else {
-      setVisible(false); // Hide modal if logged in
+      setVisible(false);
     }
-  }, [isLogged]); // Depend on authentication state
+  }, [isLogged]);
 
   return (
     <html lang="ko">
