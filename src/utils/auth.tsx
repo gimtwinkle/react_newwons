@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+
 //로그인(구글)
 provider.addScope('https://www.googleapis.com/auth/userinfo.email');
 export const googleAuth = () => {

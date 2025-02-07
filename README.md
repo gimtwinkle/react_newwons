@@ -1,5 +1,25 @@
 # react_newwons
 
+## 현재 진행상황
+### 완료
+✅ 로그인<br>
+✅ 포스트 쓰기 (C) : https://react-newwons.vercel.app/posts/create
+
+### 진행중
+🟡 모달 컴포넌트
+
+### 미완료
+🔺포스트 읽기 (R)
+  + 상세페이지 : 상세페이지에 
+  + 리스트 페이지<br><br>
+
+🔺포스트 수정 (U)<br>
+
+🔺포스트 삭제 (D)(화면단은 ux삭제가 다라 그냥 기능추가에 의미를 두겠음!)
+
+
+
+
 ## site
 
 https://react-newwons.vercel.app/
