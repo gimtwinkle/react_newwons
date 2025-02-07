@@ -3,6 +3,7 @@
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
 import { db } from '@/firebase';
 import { Post } from '@/types/post';
+import { isLoggedIn, useUserInfo } from '@/utils/auth';
 import { convertTimestamp } from '@/utils/date';
 import { doc, getDoc } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
@@ -14,6 +15,9 @@ const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) =
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const router = useRouter();
+
+  const currentLoggedState = isLoggedIn();
+  const { userName } = useUserInfo({ currentLoggedState });
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -67,13 +71,16 @@ const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) =
       >
         몽록으로 가기
       </button>
-      <button
-        onClick={() => {
-          router.push(`${params.id}/edit`);
-        }}
-      >
-        수정하하기
-      </button>
+
+      {userName === postData?.author ? (
+        <button
+          onClick={() => {
+            router.push(`${params.id}/edit`);
+          }}
+        >
+          수정하하기
+        </button>
+      ) : null}
     </div>
   );
 };

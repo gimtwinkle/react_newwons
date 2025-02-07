@@ -14,7 +14,6 @@ import { useParams } from 'next/navigation';
 import styles from './page.module.css';
 
 const Update = () => {
-  useUser;
   const params = useParams();
   const docRef = doc(db, 'newwons', `${params.id}`);
 
