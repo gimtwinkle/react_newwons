@@ -1,7 +1,14 @@
+'use client';
+
+import Login from '@/components/common/Login';
+import Modal from '@/components/common/Modal';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+import { isLoggedIn, useUserName } from '@/utils/auth';
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
+import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import './globals.css';
 import StyledComponentsRegistry from './lib/registry';
 
@@ -11,18 +18,32 @@ const montserrat = Montserrat({
   preload: true,
 });
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: 'React Newwons',
   description: 'Next.js project with Redux and Firebase',
 };
 
-export const viewport = 'width=device-width, initial-scale=1';
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
+  const [visible, setVisible] = useState(false);
+  const currentLoggedState = isLoggedIn();
+  const { isLogged = false } = useUserName({ currentLoggedState }); // Default value to prevent errors
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    if (!isLogged) {
+      setVisible(true); // Show modal if NOT logged in
+    } else {
+      setVisible(false); // Hide modal if logged in
+    }
+  }, [isLogged]); // Depend on authentication state
+
   return (
     <html lang="ko">
-      <head></head>
-      <body className={`${montserrat.className}`}>
+      <Head>
+        <title>{`${metadata.title}`}</title>
+        <meta name="description" content={`${metadata.description}`} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <body className={montserrat.className}>
         <div id="wrap">
           <StyledComponentsRegistry>
             <Header />
@@ -30,7 +51,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Footer />
           </StyledComponentsRegistry>
         </div>
+        {visible && <Modal dimmedClick={() => setVisible(false)} children={<Login />} />}
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

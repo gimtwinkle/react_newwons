@@ -35,9 +35,9 @@ const Update = () => {
   }, []);
 
   //현재 사용자 상태 확인
-  const currentUser = isLoggedIn();
-  let { isLogged } = useUserName({ currentUser });
-  useUserName({ currentUser });
+  const currentLoggedState = isLoggedIn();
+  let { isLogged } = useUserName({ currentLoggedState });
+  useUserName({ currentLoggedState });
 
   //포스트 작성자 상태관리
   const [author, setAuthor] = useState('');
