@@ -7,13 +7,14 @@ import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
-import { isLoggedIn, useUserName } from '@/utils/auth';
+import { isLoggedIn, useUserInfo } from '@/utils/auth';
 import { getCurrentTime } from '@/utils/date';
 
 import { useParams } from 'next/navigation';
 import styles from './page.module.css';
 
 const Update = () => {
+  useUser;
   const params = useParams();
   const docRef = doc(db, 'newwons', `${params.id}`);
 
@@ -39,8 +40,8 @@ const Update = () => {
 
   //현재 사용자 상태 확인
   const currentLoggedState = isLoggedIn();
-  let { isLogged } = useUserName({ currentLoggedState });
-  useUserName({ currentLoggedState });
+  let { isLogged } = useUserInfo({ currentLoggedState });
+  useUserInfo({ currentLoggedState });
 
   //포스트 작성자 상태관리
   const [author, setAuthor] = useState('');

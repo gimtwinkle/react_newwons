@@ -55,7 +55,7 @@ export const isLoggedIn = () => {
 };
 
 //로그인 상태 체크 후 사용자이름 가져오기
-export const useUserName = ({ currentLoggedState }: { currentLoggedState: boolean }) => {
+export const useUserInfo = ({ currentLoggedState }: { currentLoggedState: boolean }) => {
   const [isLogged, setIsLogged] = useState(false);
   const [userName, setUserName] = useState('unknown');
 

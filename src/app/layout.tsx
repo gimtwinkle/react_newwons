@@ -4,7 +4,7 @@ import Login from '@/components/common/Login';
 import Modal from '@/components/common/Modal';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
-import { isLoggedIn, useUserName } from '@/utils/auth';
+import { isLoggedIn, useUserInfo } from '@/utils/auth';
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
 import Head from 'next/head';
@@ -26,7 +26,7 @@ const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   const [visible, setVisible] = useState(false);
   const currentLoggedState = isLoggedIn();
-  const { isLogged = false } = useUserName({ currentLoggedState }); // Default value to prevent errors
+  const { isLogged = false } = useUserInfo({ currentLoggedState }); // Default value to prevent errors
 
   useEffect(() => {
     if (!isLogged) {

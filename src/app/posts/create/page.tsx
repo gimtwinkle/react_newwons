@@ -7,7 +7,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useState } from 'react';
 
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
-import { isLoggedIn, useUserName } from '@/utils/auth';
+import { isLoggedIn, useUserInfo } from '@/utils/auth';
 import { getCurrentTime } from '@/utils/date';
 
 import styles from './page.module.css';
@@ -15,8 +15,8 @@ import styles from './page.module.css';
 const Create = () => {
   //현재 로그인상태 체크 후 username 가져오기
   const currentLoggedState = isLoggedIn();
-  let { isLogged, userName } = useUserName({ currentLoggedState });
-  useUserName({ currentLoggedState });
+  let { isLogged, userName } = useUserInfo({ currentLoggedState });
+  useUserInfo({ currentLoggedState });
 
   //포스트 타이틀 상태관리
   const [postTitle, setPostTitle] = useState('');
