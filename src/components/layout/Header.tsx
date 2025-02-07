@@ -68,7 +68,6 @@ const Header = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLogged(true);
-        console.log(user);
         setUserName(`${user.displayName}`);
         setUserProfile(`${user.photoURL}`);
       } else {
