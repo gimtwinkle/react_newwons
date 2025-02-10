@@ -20,12 +20,13 @@ export const PostCardList = () => {
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
+          console.log(doc.data());
           posts.push({
             param: doc.id,
             postTitle: data.postTitle,
             postContent: data.postContent,
             author: data.author,
-            thumbnail: data.thumbnail,
+            thumbnail: data.postFile || `${'/defaultThumbnail.jpg'}`,
             timestamp: convertTimestamp(data.timestamp),
             category: data.category,
           });

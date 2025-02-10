@@ -8,7 +8,7 @@ export interface Post {
 }
 
 export interface PostCardProps {
-  thumbnail: string;
+  thumbnail?: string;
   postTitle: string;
   postContent?: string;
   author: string;
