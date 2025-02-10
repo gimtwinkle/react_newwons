@@ -80,6 +80,7 @@ const TitleArea = styled.div`
   width: 100%;
 
   .title {
+    display: block;
     width: 320px;
     font-size: 24px;
     font-weight: bold;
