@@ -1,13 +1,14 @@
 export interface Post {
   postTitle: string;
   postContent: string;
+  postFile: Blob | File | null;
   author: string;
   category: string;
   timestamp: string;
 }
 
 export interface PostCardProps {
-  thumbnail: string;
+  thumbnail?: string;
   postTitle: string;
   postContent?: string;
   author: string;

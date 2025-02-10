@@ -79,7 +79,7 @@ export const PostInfoGroup = ({ title, author, category, timestamp, href }: Post
           <Link href="/">Home</Link>
         </li>
         <li>
-          <Link href={href}>{title}</Link>
+          <Link href={`${href}`}>{title}</Link>
         </li>
       </PostBreadCrumb>
       <PostTitle>{title}</PostTitle>

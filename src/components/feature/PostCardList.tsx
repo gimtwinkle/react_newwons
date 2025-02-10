@@ -1,36 +1,54 @@
 'use client';
 import { db } from '@/firebase';
 import { PostCardProps } from '@/types/post';
+import { convertTimestamp } from '@/utils/date';
 import { collection, getDocs } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { PostCard } from './PostCard';
 
-//등록되어있는 전체 data get(console)
-const querySnapshot = await getDocs(collection(db, 'newwons'));
-let resultList: any[] = [];
-const result = querySnapshot.forEach((doc) => {
-  // console.log(doc.id, ' => ', doc.data());
-  resultList = [...resultList, { param: doc.id, ...doc.data() }];
-  // console.log(resultList);
-});
-export const PostCardList = ({
-  thumbnail,
-  postTitle,
-  author,
-  category,
-  timestamp}: PostCardProps) => {
+export const PostCardList = () => {
+  const [docList, setDocList] = useState<PostCardProps[]>([]);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'newwons'));
+        const posts: PostCardProps[] = [];
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          console.log(doc.data());
+          posts.push({
+            param: doc.id,
+            postTitle: data.postTitle,
+            postContent: data.postContent,
+            author: data.author,
+            thumbnail: data.postFile || `${'/defaultThumbnail.jpg'}`,
+            timestamp: convertTimestamp(data.timestamp),
+            category: data.category,
+          });
+        });
+
+        setDocList(posts);
+      } catch (error) {
+        alert(`${error}:게시글을 가져오는 데 문제가 발생했습니다.`);
+      }
+    };
+
+    fetchPosts();
+  }, []);
   return (
     <ListContainer>
-      {resultList.map((obj, idx) => (
+      {docList.map((post) => (
         <PostCard
-          key={idx}
-          param={obj.param}
-          thumbnail={obj.thumbnail}
-          postTitle={obj.postTitle}
-          author={obj.userName}
-          category={obj.category}
-          timestamp={timestamp}
-          postContent = {obj.postContent}
+          key={post.param}
+          param={post.param}
+          author={post.author}
+          category={post.category}
+          timestamp={post.timestamp}
+          thumbnail={post.thumbnail}
+          postTitle={post.postTitle}
+          postContent={post.postContent}
         />
       ))}
     </ListContainer>
@@ -40,7 +58,7 @@ export const PostCardList = ({
 const ListContainer = styled.div`
   width: 1080px;
   margin: auto;
-  padding-top: 20px;
+  padding: 8rem 0 2rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

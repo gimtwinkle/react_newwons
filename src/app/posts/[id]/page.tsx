@@ -1,17 +1,24 @@
 'use client';
+
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
 import { db } from '@/firebase';
 import { Post } from '@/types/post';
+import { isLoggedIn, useUserInfo } from '@/utils/auth';
+import { convertTimestamp } from '@/utils/date';
 import { doc, getDoc } from 'firebase/firestore';
-import { useParams } from 'next/navigation';
+import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styles from './page.module.css';
 
-const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) => {
+const Detail = () => {
   const [postData, setPostData] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const params = useParams();
-  //특정 단일 data 가져오기(문서번호는 전체 데이터 가져오는 리스트 쪽에서 확인할 수 있을 것 같아요.)
+  const router = useRouter();
+
+  const currentLoggedState = isLoggedIn();
+  const { userName } = useUserInfo({ currentLoggedState });
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -19,23 +26,20 @@ const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) =
 
       try {
         setLoading(true);
-        console.log('params.id 확인:', params, params.id);
 
-        const docRef = doc(db, 'newwons', params.id);
+        const docRef = doc(db, 'newwons', `${params.id}`);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
           const data = docSnap.data();
 
-          // 타임스탬프 형식 변환
           const formattedData = {
             ...data,
-            timestamp: data.timestamp?.toDate().toLocaleString() || '',
+            timestamp: convertTimestamp(data.timestamp) || '',
           } as Post;
 
           setPostData(formattedData);
         } else {
-          // docSnap.data() will be undefined in this case
           console.log('No such document!');
         }
       } catch (error) {
@@ -50,7 +54,6 @@ const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) =
 
   if (loading) return <div>로딩중...🔍</div>;
   if (!postData) return <div>포스트를 찾을 수 없습니다. 🙈</div>;
-  // console.log('postData:', postData);
 
   return (
     <div className={styles.postContainer}>
@@ -59,9 +62,35 @@ const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) =
         category="category"
         author={postData.author}
         timestamp={postData.timestamp}
-        href={params.id}
+        href={`${params.id}`}
       />
+
+      {postData.postFile && (
+        <Image
+          src={`${postData.postFile}`}
+          style={{ width: '100%', maxWidth: '500px', height: 'auto', textAlign: 'center' }}
+          alt="PostImg"
+        />
+      )}
       <div className={styles.postContent}>{postData.postContent}</div>
+
+      <button
+        onClick={() => {
+          router.push(`/`);
+        }}
+      >
+        몽록으로 가기
+      </button>
+
+      {userName === postData?.author ? (
+        <button
+          onClick={() => {
+            router.push(`${params.id}/edit`);
+          }}
+        >
+          수정하하기
+        </button>
+      ) : null}
     </div>
   );
 };

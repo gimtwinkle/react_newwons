@@ -13,12 +13,14 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.0",
     "firebase": "^11.1.0",
+    "lottie-web": "^5.12.2",
     "next": "15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-lottie-player": "^2.1.0",
     "react-redux": "^9.2.0",
-    "styled-components": "^6.1.14"
+    "styled-components": "^6.1.14",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -12,7 +12,8 @@ const LoginButton = () => {
   return (
     <>
       <LoginButtonStyled onClick={handleGoogleLogin}>
-        구현이 번거로운 관계로 부득이 <Image src={googleLogo} alt="google" width={40} />
+        구현이 번거로운 관계로 &nbsp;
+        <Image src={googleLogo} alt="google" width={40} />
         로만 로그인
       </LoginButtonStyled>
     </>

@@ -3,38 +3,56 @@ import { Button } from '@/components/common/Button';
 import Input from '@/components/common/Input';
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
 import { db, storage } from '@/firebase';
-import { isLoggedIn, useUserInfo } from '@/utils/auth';
 import { getCurrentTime } from '@/utils/date';
-import { getAuth } from 'firebase/auth';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useAuth } from '../../../../contexts/AuthContext';
 import styles from './page.module.css';
 
-const Create = () => {
+const Update = () => {
+  const params = useParams();
+  const docRef = doc(db, 'newwons', `${params.id}`);
+  const { isLoading, user } = useAuth();
   const router = useRouter();
-  const auth = getAuth();
-  const user = auth.currentUser;
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const docSnap = await getDoc(docRef);
 
-  // 현재 로그인 상태 체크 후 username 가져오기
-  const currentLoggedState = isLoggedIn();
-  const { isLogged, userName } = useUserInfo({ currentLoggedState }) || {
-    isLogged: false,
-    userName: '',
+        if (docSnap.exists()) {
+          console.log(docSnap.data());
+          setPostTitle(docSnap.data().postTitle);
+          setPostContent(docSnap.data().postContent);
+          setAttachment(docSnap.data().postFile);
+          setAuthor(docSnap.data().author);
+        } else {
+          console.log('No such document!');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, [docRef]);
+
+  //포스트 작성자 상태관리
+  const [author, setAuthor] = useState('');
+
+  //포스트 타이틀 상태관리
+  const [postTitle, setPostTitle] = useState('');
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPostTitle(e.target.value);
   };
 
-  // 포스트 타이틀 상태 관리
-  const [postTitle, setPostTitle] = useState('');
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setPostTitle(e.target.value);
-
-  // 포스트 컨텐츠 상태 관리
+  //포스트 컨텐츠 상태관리
   const [postContent, setPostContent] = useState('');
-  const handleChangeTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+  const handleChangeTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPostContent(e.target.value);
+  };
 
   // 포스트 업로드 파일 상태 관리
   const [attachment, setAttachment] = useState('');
@@ -49,6 +67,7 @@ const Create = () => {
 
     if (theFile.size > 512000) {
       alert('500KB 이하로 업로드해주세요. 무료할당끝나면 유료라..😂(카드연결되어있음)');
+      setAttachment('');
       return;
     } else {
       alert('첨부완료!');
@@ -67,13 +86,13 @@ const Create = () => {
 
   const onClearAttachment = () => setAttachment('');
 
-  // 데이터 포스트
-  async function handleClickCreatePosts() {
+  async function handleClickUpdatePosts() {
     try {
       if (!postTitle || !postContent) {
         throw new Error('제목과 내용을 입력해야 합니다.');
       }
-      if (!isLogged) {
+      if (isLoading === false) {
+        console.log(isLoading);
         alert('로그인 후에만 작성이 가능합니다.');
         return;
       }
@@ -85,30 +104,27 @@ const Create = () => {
         attachmentUrl = await getDownloadURL(response.ref);
       }
 
-      // 이미지 URL이 업로드된 후 Firestore에 저장
-      const docRef = await addDoc(collection(db, 'newwons'), {
+      await updateDoc(docRef, {
         postTitle,
         postContent,
         postFile: attachmentUrl,
-        author: userName,
+        author,
         timestamp: serverTimestamp(),
-        postId: user?.uid || '',
       });
 
-      alert('등록되었습니다.');
+      alert(`등록되었습니다.`);
       router.push(`/posts/${docRef.id}`);
     } catch (error) {
-      alert(`오류 발생: ${error}`);
-      console.error(error);
+      alert(`${error}`);
     }
   }
 
   return (
     <div className={styles.createPostForm}>
       <PostInfoGroup
-        title="Write"
+        title="Edit"
         category="category"
-        author={userName}
+        author={author}
         timestamp={`${getCurrentTime()}`}
         href=""
       />
@@ -148,15 +164,14 @@ const Create = () => {
             </div>
           </div>
         )}
-
-        <br></br>
-
-        <button onClick={handleClickCreatePosts}>작성하기 임시버튼</button>
-        <br />
-        <Button />
       </div>
+
+      <button onClick={handleClickUpdatePosts}>수정하기 임시버튼</button>
+      <br />
+
+      <Button />
     </div>
   );
 };
 
-export default Create;
+export default Update;
