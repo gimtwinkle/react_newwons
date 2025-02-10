@@ -1,8 +1,11 @@
 'use client';
 import img_logo from '@/assets/images/google_logo.png';
-import { isLoggedIn, logout, useUserName } from '@/utils/auth';
+import { app } from '@/firebase';
+import { isLoggedIn, logout, useUserInfo } from '@/utils/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const HeaderBox = styled.div`
@@ -13,7 +16,7 @@ const HeaderBox = styled.div`
   width: 100%;
   padding: 14px 80px;
   background: #fff;
-  z-index:10;
+  z-index: 10;
 `;
 
 const Logo = styled.div`
@@ -47,41 +50,67 @@ const Item = styled.li`
   }
 `;
 
-const Header = () => {
-  const currentUser = isLoggedIn();
-  let { isLogged, userName } = useUserName({ currentUser });
-  const loginButtonText = isLogged ? 'LOGOUT' : 'LOGIN';
+const Profile = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  margin-right: 5px;
+`;
 
-  const handleAuthRedirect = () => {
+const Header = () => {
+  const [userProfile, setUserProfile] = useState('');
+  const currentLoggedState = isLoggedIn();
+  const { isLogged = false, userName } = useUserInfo({ currentLoggedState });
+
+  useEffect(() => {
+    const auth = getAuth(app);
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserProfile(`${user.displayName}`);
+        setUserProfile(`${user.photoURL}`);
+      } else {
+        setUserProfile('');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleClickLogout = () => {
     if (isLogged) {
       logout();
-      isLogged = false;
     } else {
-      window.location.href = '/posts/login';
     }
   };
-
   return (
+    //로그인 안했을때 아무것도 없음.
+    //로그인 했을때 헤더 노출 + 로그아웃 버튼
     <HeaderBox>
-      <span>{isLogged ? `로그인한 사용자: ${userName}` : '로그인하지 않음'}</span>
       <Logo>
         <Link href={'/'}>
           <Image src={img_logo} alt="logo" />
         </Link>
       </Logo>
-      <Nav>
-        <List>
-          <Item>
-            <button onClick={handleAuthRedirect}>{loginButtonText}</button>
-          </Item>
-          <Item>
-            <Link href={'/posts/create'}>작성하기</Link>
-          </Item>
-          <Item>
-            <Link href={'#none'}>Menu</Link>
-          </Item>
-        </List>
-      </Nav>
+      {isLogged ? (
+        <div style={{ display: 'flex', gap: '50px' }}>
+          <Nav>
+            <List>
+              <Item>
+                <Link href={'/posts/create'}>Write</Link>
+              </Item>
+              <Item>
+                <Link href={'#none'}>Calendar(예정)</Link>
+              </Item>
+            </List>
+          </Nav>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <Profile src={userProfile} />
+            {userName}
+            <button onClick={handleClickLogout}>LOGOUT</button>
+          </div>
+        </div>
+      ) : null}
     </HeaderBox>
   );
 };

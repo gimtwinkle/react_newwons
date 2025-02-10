@@ -13,6 +13,23 @@
 .formArea {
   margin-top: 50px;
 }
+input.blind {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+.fileName {
+  display: inline-block;
+  height: 40px;
+  padding: 0 10px;
+  vertical-align: middle;
+  border: 1px solid #000000;
+  width: 100%;
+  color: #000;
+}
 .fileBox {
   display: flex;
   flex-wrap: nowrap;
