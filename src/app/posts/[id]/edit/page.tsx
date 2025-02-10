@@ -1,37 +1,35 @@
 'use client';
 import { Button } from '@/components/common/Button';
 import Input from '@/components/common/Input';
-
-import { db, storage } from '@/firebase';
-import { deleteDoc, doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
+import { db, storage } from '@/firebase';
+import { isLoggedIn, useUserInfo } from '@/utils/auth';
 import { getCurrentTime } from '@/utils/date';
-import { deleteObject, getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { getAuth } from 'firebase/auth';
+import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useAuth } from '../../../../contexts/AuthContext';
 import styles from './page.module.css';
 
 const Update = () => {
   const params = useParams();
   const docRef = doc(db, 'newwons', `${params.id}`);
+  const auth = getAuth();
+  const user = auth.currentUser;
   const router = useRouter();
-
-  //현재 사용자 상태 확인
-  const { user, isLoading } = useAuth();
-
   useEffect(() => {
     async function fetchData() {
       try {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
+          console.log(docSnap.data());
           setPostTitle(docSnap.data().postTitle);
           setPostContent(docSnap.data().postContent);
           setAttachment(docSnap.data().postFile);
-          setAuthor(docSnap.data().userName);
+          setAuthor(docSnap.data().author);
         } else {
           console.log('No such document!');
         }
@@ -41,6 +39,11 @@ const Update = () => {
     }
     fetchData();
   }, []);
+
+  //현재 사용자 상태 확인
+  const currentLoggedState = isLoggedIn();
+  let { isLogged } = useUserInfo({ currentLoggedState });
+  useUserInfo({ currentLoggedState });
 
   //포스트 작성자 상태관리
   const [author, setAuthor] = useState('');
@@ -57,6 +60,7 @@ const Update = () => {
     setPostContent(e.target.value);
   };
 
+  // 포스트 업로드 파일 상태 관리
   const [attachment, setAttachment] = useState('');
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,6 +73,7 @@ const Update = () => {
 
     if (theFile.size > 512000) {
       alert('500KB 이하로 업로드해주세요. 무료할당끝나면 유료라..😂(카드연결되어있음)');
+      setAttachment('');
       return;
     } else {
       alert('첨부완료!');
@@ -85,57 +90,40 @@ const Update = () => {
     reader.readAsDataURL(theFile);
   };
 
-  const onClearAttachment = () => {
-    setAttachment('');
-    onDelete();
-  };
+  const onClearAttachment = () => setAttachment('');
 
-  //data post
   async function handleClickUpdatePosts() {
     try {
       if (!postTitle || !postContent) {
         throw new Error('제목과 내용을 입력해야 합니다.');
       }
-      if (isLoading) {
+      if (!isLogged) {
         alert('로그인 후에만 작성이 가능합니다.');
         return;
       }
 
       let attachmentUrl = '';
-
-      // 이미지 업로드 후 다운로드 URL 저장
       if (user && attachment !== '') {
         const attachmentRef = ref(storage, `${user.uid}/${uuidv4()}`);
-        await uploadString(attachmentRef, attachment, 'data_url');
-        attachmentUrl = await getDownloadURL(attachmentRef);
+        const response = await uploadString(attachmentRef, attachment, 'data_url');
+        attachmentUrl = await getDownloadURL(response.ref);
       }
 
-      // Firestore 문서 업데이트
       await updateDoc(docRef, {
         postTitle,
         postContent,
-        postFile: attachmentUrl,
+        postFile: attachment,
         author,
         timestamp: serverTimestamp(),
       });
 
-      alert('등록되었습니다.');
-      router.push('/');
+      alert(`등록되었습니다.`);
+      router.push(`/posts/${docRef.id}`);
     } catch (error) {
       alert(`${error}`);
     }
   }
 
-  const onDelete = () => {
-    const yes = window.confirm('삭제하시겠습니까?');
-    let attachmentUrl = '';
-    if (yes) {
-      deleteDoc(doc(db, 'posts', docRef.id));
-      if (attachmentUrl !== '') {
-        deleteObject(ref(storage, attachmentUrl));
-      }
-    }
-  };
   return (
     <div className={styles.createPostForm}>
       <PostInfoGroup
