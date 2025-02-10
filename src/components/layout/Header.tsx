@@ -1,7 +1,7 @@
 'use client';
 import img_logo from '@/assets/images/google_logo.png';
 import { app } from '@/firebase';
-import { logout } from '@/utils/auth';
+import { isLoggedIn, logout, useUserInfo } from '@/utils/auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -58,21 +58,19 @@ const Profile = styled.img`
 `;
 
 const Header = () => {
-  const [isLogged, setIsLogged] = useState(false);
-  const [userName, setUserName] = useState('');
   const [userProfile, setUserProfile] = useState('');
+  const currentLoggedState = isLoggedIn();
+  const { isLogged = false, userName } = useUserInfo({ currentLoggedState });
 
   useEffect(() => {
     const auth = getAuth(app);
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setIsLogged(true);
-        setUserName(`${user.displayName}`);
+        setUserProfile(`${user.displayName}`);
         setUserProfile(`${user.photoURL}`);
       } else {
-        setIsLogged(false);
-        setUserName('');
+        setUserProfile('');
       }
     });
 
@@ -82,10 +80,9 @@ const Header = () => {
   const handleClickLogout = () => {
     if (isLogged) {
       logout();
-      setIsLogged(false);
+    } else {
     }
   };
-
   return (
     //로그인 안했을때 아무것도 없음.
     //로그인 했을때 헤더 노출 + 로그아웃 버튼

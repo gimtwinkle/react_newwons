@@ -2,30 +2,26 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-interface ModalProps {
-  dimmedClick: () => void;
+const Modal = ({
+  children,
+  modalVisible,
+}: {
   children: React.ReactNode;
-}
-
-const Modal = ({ dimmedClick, children }: ModalProps) => {
-  const [isVisible, setIsVisible] = useState(false);
-
+  modalVisible: boolean;
+}) => {
+  const [isMounted, setIsMounted] = useState(modalVisible);
   useEffect(() => {
-    // 모달이 마운트되면 애니메이션 실행
-    setTimeout(() => setIsVisible(true), 10);
+    setTimeout(() => setIsMounted(true), 10); // 모달 열릴 때 애니메이션 시작
   }, []);
 
   const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(dimmedClick, 300); // 애니메이션 끝난 후 부모에서 상태 변경
+    setIsMounted(false);
+    setTimeout(() => 300); // 애니메이션 끝나고 모달 제거
   };
 
   return (
-    <DimmedField className={isVisible ? 'show' : ''} onClick={handleClose}>
-      <ModalField
-        className={isVisible ? 'show' : ''}
-        onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
-      >
+    <DimmedField className={isMounted ? 'show' : ''} onClick={handleClose}>
+      <ModalField className={isMounted ? 'show' : ''} onClick={(e) => e.stopPropagation()}>
         {children}
       </ModalField>
     </DimmedField>
@@ -33,7 +29,6 @@ const Modal = ({ dimmedClick, children }: ModalProps) => {
 };
 
 const DimmedField = styled.div`
-  z-index: 1;
   position: fixed;
   top: 0;
   left: 0;
@@ -41,16 +36,17 @@ const DimmedField = styled.div`
   height: 100%;
   background: rgba(0, 0, 0, 0);
   opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+  transition:
+    opacity 0.3s ease-in-out,
+    background 0.3s ease-in-out;
 
   &.show {
-    background: rgba(0, 0, 0, 0.5);
     opacity: 1;
+    background: rgba(0, 0, 0, 0.5);
   }
 `;
 
 const ModalField = styled.div`
-  z-index: 1;
   position: absolute;
   top: 50%;
   left: 50%;
