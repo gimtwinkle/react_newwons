@@ -52,8 +52,24 @@ const Detail = () => {
     fetchPost();
   }, [params.id]);
 
-  if (loading) return <div>로딩중...🔍</div>;
-  if (!postData) return <div>포스트를 찾을 수 없습니다. 🙈</div>;
+  if (loading)
+    return (
+      <div
+        className={styles.postContainer}
+        style={{ justifyContent: 'center', display: 'flex', alignItems: 'center' }}
+      >
+        로딩중...🔍
+      </div>
+    );
+  if (!postData)
+    return (
+      <div
+        className={styles.postContainer}
+        style={{ justifyContent: 'center', display: 'flex', alignItems: 'center' }}
+      >
+        포스트를 찾을 수 없습니다. 🙈
+      </div>
+    );
 
   return (
     <div className={styles.postContainer}>
@@ -68,10 +84,13 @@ const Detail = () => {
       {postData.postFile && (
         <Image
           src={`${postData.postFile}`}
+          width="500"
+          height="300"
           style={{ width: '100%', maxWidth: '500px', height: 'auto', textAlign: 'center' }}
           alt="PostImg"
         />
       )}
+
       <div className={styles.postContent}>{postData.postContent}</div>
 
       <button

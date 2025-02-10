@@ -1,6 +1,8 @@
 .postContainer {
   width: 1000px;
-  margin: 40px auto 0;
+  flex: 1;
+  margin: 80px auto;
+  padding-top: 80px;
 }
 .postContent {
   margin: 40px 0 80px;

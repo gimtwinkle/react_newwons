@@ -64,4 +64,5 @@ const ListContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
+  flex: 1;
 `;

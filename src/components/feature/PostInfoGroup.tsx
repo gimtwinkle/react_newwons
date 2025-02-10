@@ -37,6 +37,7 @@ const PostBreadCrumb = styled.ul`
 
 const PostTitle = styled.h3`
   font-size: 48px;
+  padding: 20px 0 10px;
 `;
 
 const PostInfo = styled.ul`
@@ -79,7 +80,7 @@ export const PostInfoGroup = ({ title, author, category, timestamp, href }: Post
           <Link href="/">Home</Link>
         </li>
         <li>
-          <Link href={`${href}`}>{title}</Link>
+          <Link href={`${href}`}>Post Detail</Link>
         </li>
       </PostBreadCrumb>
       <PostTitle>{title}</PostTitle>
