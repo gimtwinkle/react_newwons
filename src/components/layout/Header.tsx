@@ -1,9 +1,8 @@
 'use client';
-import img_logo from '@/assets/images/google_logo.png';
+import Logo from '@/components/common/Logo';
 import { app } from '@/firebase';
 import { isLoggedIn, logout, useUserInfo } from '@/utils/auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -17,14 +16,6 @@ const HeaderBox = styled.div`
   padding: 14px 80px;
   background: #fff;
   z-index: 10;
-`;
-
-const Logo = styled.div`
-  display: inline-block;
-  img {
-    width: 122px;
-    height: 32px;
-  }
 `;
 
 const Nav = styled.nav`
@@ -87,11 +78,7 @@ const Header = () => {
     //로그인 안했을때 아무것도 없음.
     //로그인 했을때 헤더 노출 + 로그아웃 버튼
     <HeaderBox>
-      <Logo>
-        <Link href={'/'}>
-          <Image src={img_logo} alt="logo" />
-        </Link>
-      </Logo>
+      <Logo />
       {isLogged ? (
         <div style={{ display: 'flex', gap: '50px' }}>
           <Nav>
@@ -100,7 +87,14 @@ const Header = () => {
                 <Link href={'/posts/create'}>Write</Link>
               </Item>
               <Item>
-                <Link href={'#none'}>Calendar(예정)</Link>
+                <Link
+                  href={'#'}
+                  onClick={() => {
+                    alert('준비중!');
+                  }}
+                >
+                  Calendar(예정)
+                </Link>
               </Item>
             </List>
           </Nav>
