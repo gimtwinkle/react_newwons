@@ -1,27 +1,30 @@
 'use client';
+import { useAuth } from '@/contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const Modal = ({
-  children,
-  modalVisible,
-}: {
-  children: React.ReactNode;
-  modalVisible: boolean;
-}) => {
-  const [isMounted, setIsMounted] = useState(modalVisible);
+const Modal = ({ children }: { children: React.ReactNode }) => {
+  const { user, isLoading } = useAuth();
+  const [modalVisible, setModalVisible] = useState({ isLoading });
+
   useEffect(() => {
-    setTimeout(() => setIsMounted(true), 10); // 모달 열릴 때 애니메이션 시작
+    if (!user || null) {
+      setModalVisible({ isLoading: true });
+    }
   }, []);
 
   const handleClose = () => {
-    setIsMounted(false);
-    setTimeout(() => 300); // 애니메이션 끝나고 모달 제거
+    if (!user || null) {
+      // console.log('비로그인 상태에서는 닫히지 않도록');
+      return;
+    } else {
+      setModalVisible({ isLoading: false });
+    }
   };
 
   return (
-    <DimmedField className={isMounted ? 'show' : ''} onClick={handleClose}>
-      <ModalField className={isMounted ? 'show' : ''} onClick={(e) => e.stopPropagation()}>
+    <DimmedField className={modalVisible ? 'show' : ''} onClick={handleClose}>
+      <ModalField className={modalVisible ? 'show' : ''} onClick={(e) => e.stopPropagation()}>
         {children}
       </ModalField>
     </DimmedField>

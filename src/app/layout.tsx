@@ -35,7 +35,7 @@ const LayoutContent = ({ children }: { children: React.ReactNode }) => {
       <Header />
       {children}
       <Footer />
-      {!user && <Modal dimmedClick={() => {}} children={<Login />} />}
+      {!user && <Modal children={<Login />} />}
     </>
   );
 };
