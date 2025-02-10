@@ -35,7 +35,11 @@ const LayoutContent = ({ children }: { children: React.ReactNode }) => {
       <Header />
       {children}
       <Footer />
-      {!user && <Modal children={<Login />} />}
+      {!user && (
+        <Modal>
+          <Login />
+        </Modal>
+      )}
     </>
   );
 };

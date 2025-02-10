@@ -6,11 +6,12 @@ import { Post } from '@/types/post';
 import { isLoggedIn, useUserInfo } from '@/utils/auth';
 import { convertTimestamp } from '@/utils/date';
 import { doc, getDoc } from 'firebase/firestore';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styles from './page.module.css';
 
-const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) => {
+const Detail = () => {
   const [postData, setPostData] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const params = useParams();
@@ -65,10 +66,8 @@ const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) =
       />
 
       {postData.postFile && (
-        <img
+        <Image
           src={`${postData.postFile}`}
-          width="50%"
-          height="auto"
           style={{ width: '100%', maxWidth: '500px', height: 'auto', textAlign: 'center' }}
           alt="PostImg"
         />

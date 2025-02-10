@@ -2,6 +2,7 @@
 
 import defaultImg from '@/assets/images/defaultThumbnail.jpg';
 import { PostCardProps } from '@/types/post';
+import Image from 'next/image';
 import styled from 'styled-components';
 
 export const PostCard = ({
@@ -16,7 +17,7 @@ export const PostCard = ({
   return (
     <PostCardContainer>
       <Thumbnail href={'/posts/' + param}>
-        <img src={thumbnail} alt="thumbnail" width={514} height={400} />
+        <Image src={thumbnail} alt="thumbnail" width={514} height={400} />
       </Thumbnail>
 
       <PostInfo>

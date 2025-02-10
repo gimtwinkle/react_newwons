@@ -3,21 +3,20 @@ import { Button } from '@/components/common/Button';
 import Input from '@/components/common/Input';
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
 import { db, storage } from '@/firebase';
-import { isLoggedIn, useUserInfo } from '@/utils/auth';
 import { getCurrentTime } from '@/utils/date';
-import { getAuth } from 'firebase/auth';
 import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useAuth } from '../../../../contexts/AuthContext';
 import styles from './page.module.css';
 
 const Update = () => {
   const params = useParams();
   const docRef = doc(db, 'newwons', `${params.id}`);
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const { isLoading, user } = useAuth();
   const router = useRouter();
   useEffect(() => {
     async function fetchData() {
@@ -38,12 +37,7 @@ const Update = () => {
       }
     }
     fetchData();
-  }, []);
-
-  //현재 사용자 상태 확인
-  const currentLoggedState = isLoggedIn();
-  let { isLogged } = useUserInfo({ currentLoggedState });
-  useUserInfo({ currentLoggedState });
+  }, [docRef]);
 
   //포스트 작성자 상태관리
   const [author, setAuthor] = useState('');
@@ -97,7 +91,8 @@ const Update = () => {
       if (!postTitle || !postContent) {
         throw new Error('제목과 내용을 입력해야 합니다.');
       }
-      if (!isLogged) {
+      if (isLoading === false) {
+        console.log(isLoading);
         alert('로그인 후에만 작성이 가능합니다.');
         return;
       }
@@ -112,7 +107,7 @@ const Update = () => {
       await updateDoc(docRef, {
         postTitle,
         postContent,
-        postFile: attachment,
+        postFile: attachmentUrl,
         author,
         timestamp: serverTimestamp(),
       });
@@ -163,7 +158,7 @@ const Update = () => {
         </div>
         {attachment && (
           <div className={styles.preview}>
-            <img src={attachment} alt="PostImg" />
+            <Image src={attachment} alt="PostImg" />
             <div onClick={onClearAttachment} className={styles.removeButton}>
               <span>Remove</span>
             </div>

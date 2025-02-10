@@ -8,6 +8,7 @@ import { getCurrentTime } from '@/utils/date';
 import { getAuth } from 'firebase/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -141,7 +142,7 @@ const Create = () => {
         </div>
         {attachment && (
           <div className={styles.preview}>
-            <img src={attachment} alt="PostImg" />
+            <Image src={attachment} alt="PostImg" />
             <div onClick={onClearAttachment} className={styles.removeButton}>
               <span>Remove</span>
             </div>

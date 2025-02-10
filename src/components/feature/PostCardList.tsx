@@ -9,9 +9,6 @@ import { PostCard } from './PostCard';
 
 export const PostCardList = () => {
   const [docList, setDocList] = useState<PostCardProps[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -34,9 +31,7 @@ export const PostCardList = () => {
 
         setDocList(posts);
       } catch (error) {
-        setError('게시글을 가져오는 데 문제가 발생했습니다.');
-      } finally {
-        setLoading(false);
+        alert(`${error}:게시글을 가져오는 데 문제가 발생했습니다.`);
       }
     };
 

@@ -1,6 +1,6 @@
 'use client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const Modal = ({ children }: { children: React.ReactNode }) => {
@@ -11,7 +11,7 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
     if (!user || null) {
       setModalVisible({ isLoading: true });
     }
-  }, []);
+  }, [user]);
 
   const handleClose = () => {
     if (!user || null) {
@@ -24,7 +24,10 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <DimmedField className={modalVisible ? 'show' : ''} onClick={handleClose}>
-      <ModalField className={modalVisible ? 'show' : ''} onClick={(e) => e.stopPropagation()}>
+      <ModalField
+        className={modalVisible ? 'show' : ''}
+        onClick={(e: React.SyntheticEvent) => e.stopPropagation()}
+      >
         {children}
       </ModalField>
     </DimmedField>
