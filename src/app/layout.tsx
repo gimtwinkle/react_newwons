@@ -4,11 +4,9 @@ import Login from '@/components/common/Login';
 import Modal from '@/components/common/Modal';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
-import { isLoggedIn, useUserInfo } from '@/utils/auth';
-import type { Metadata } from 'next';
+import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { Montserrat } from 'next/font/google';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
 import './globals.css';
 import StyledComponentsRegistry from './lib/registry';
 
@@ -18,40 +16,46 @@ const montserrat = Montserrat({
   preload: true,
 });
 
-const metadata: Metadata = {
-  title: 'React Newwons',
-  description: 'Next.js project with Redux and Firebase',
+const LayoutContent = ({ children }: { children: React.ReactNode }) => {
+  const { user, isLoading } = useAuth();
+
+  // 로딩중에는 아무것도 렌더링하지 않음
+  if (isLoading) {
+    return (
+      <>
+        <Header />
+        {children}
+        <Footer />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Header />
+      {children}
+      <Footer />
+      {!user && <Modal dimmedClick={() => {}} children={<Login />} />}
+    </>
+  );
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
-  const [visible, setVisible] = useState(false);
-  const currentLoggedState = isLoggedIn();
-  const { isLogged = false } = useUserInfo({ currentLoggedState });
-
-  useEffect(() => {
-    if (!isLogged) {
-      setVisible(true);
-    } else {
-      setVisible(false);
-    }
-  }, [isLogged]);
-
   return (
     <html lang="ko">
       <Head>
-        <title>{`${metadata.title}`}</title>
-        <meta name="description" content={`${metadata.description}`} />
+        <title>React Newwons</title>
+        <meta name="description" content="Next.js project with Redux and Firebase" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <body className={montserrat.className}>
         <div id="wrap">
           <StyledComponentsRegistry>
-            <Header />
-            {children}
-            <Footer />
+            <AuthProvider>
+              <LayoutContent>{children}</LayoutContent>
+            </AuthProvider>
           </StyledComponentsRegistry>
         </div>
-        {visible && <Modal dimmedClick={() => setVisible(false)} children={<Login />} />}
       </body>
     </html>
   );
