@@ -1,28 +1,28 @@
 'use client';
 
+import defaultImg from '@/assets/images/defaultThumbnail.jpg';
 import { PostCardProps } from '@/types/post';
-import Image from 'next/image';
 import styled from 'styled-components';
 
 export const PostCard = ({
   param = '',
-  thumbnail = 'https://images.unsplash.com/photo-1513977055326-8ae6272d90a7?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  thumbnail = `${defaultImg}`,
   postTitle = 'Post Title',
   author = 'Author',
   category = 'Category',
   timestamp = 'a min ago',
-  postContent = ''
+  postContent = '',
 }: PostCardProps) => {
   return (
     <PostCardContainer>
-      <Thumbnail href={"/posts/" + param}>
-        <Image src={thumbnail} alt="thumbnail" width={514} height={400} />
+      <Thumbnail href={'/posts/' + param}>
+        <img src={thumbnail} alt="thumbnail" width={514} height={400} />
       </Thumbnail>
 
       <PostInfo>
         <TitleArea>
           <TitleContent>
-            <a href={"/posts/" + param} className="title">
+            <a href={'/posts/' + param} className="title">
               {postTitle}
             </a>
             <Meta>
@@ -33,9 +33,7 @@ export const PostCard = ({
           <div className="category">{category}</div>
         </TitleArea>
 
-        <Content href={"/posts/" + param}>
-          {postContent}
-        </Content>
+        <Content href={'/posts/' + param}>{postContent}</Content>
       </PostInfo>
     </PostCardContainer>
   );

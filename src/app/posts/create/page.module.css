@@ -27,7 +27,16 @@
   width: 100%;
   color: #000;
 }
-.fileButtonRole {
+input.blind {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+
+.fileButton {
   display: inline-block;
   padding: 10px 20px;
   color: #fff;
@@ -40,11 +49,26 @@
   margin-left: 10px;
   width: 133px;
 }
-.blind {
-  position: absolute;
-  width: 0;
-  height: 0;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
+
+.fileButton:hover {
+  background-color: ivory;
+}
+
+.preview {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.preview img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.removeButton {
+  margin-top: 5px;
+  cursor: pointer;
+  color: red;
+  font-weight: bold;
 }

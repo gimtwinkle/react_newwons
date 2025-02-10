@@ -2,62 +2,70 @@
 import { Button } from '@/components/common/Button';
 import Input from '@/components/common/Input';
 import PostInfoGroup from '@/components/feature/PostInfoGroup';
-import { db } from '@/firebase';
+import { db, storage } from '@/firebase';
 import { isLoggedIn, useUserInfo } from '@/utils/auth';
 import { getCurrentTime } from '@/utils/date';
+import { getAuth } from 'firebase/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './page.module.css';
 
 const Create = () => {
   const router = useRouter();
+  const auth = getAuth();
+  const user = auth.currentUser;
 
   // 현재 로그인 상태 체크 후 username 가져오기
   const currentLoggedState = isLoggedIn();
-  let { isLogged, userName } = useUserInfo({ currentLoggedState });
-  useUserInfo({ currentLoggedState });
+  const { isLogged, userName } = useUserInfo({ currentLoggedState }) || {
+    isLogged: false,
+    userName: '',
+  };
 
   // 포스트 타이틀 상태 관리
   const [postTitle, setPostTitle] = useState('');
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) =>
     setPostTitle(e.target.value);
-  };
 
   // 포스트 컨텐츠 상태 관리
   const [postContent, setPostContent] = useState('');
-  const handleChangeTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChangeTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     setPostContent(e.target.value);
-  };
 
   // 포스트 업로드 파일 상태 관리
-  const [image, setImage] = useState<File | null>(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [attachment, setAttachment] = useState('');
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setImage(e.target.files[0]);
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAttachment(e.target.value);
+    const { files } = e.target;
+    if (!files || files.length === 0) return;
+
+    const theFile = files[0];
+    const reader = new FileReader();
+
+    if (theFile.size > 512000) {
+      alert('500KB 이하로 업로드해주세요. 무료할당끝나면 유료라..😂(카드연결되어있음)');
+      return;
+    } else {
+      alert('첨부완료!');
     }
+
+    reader.onloadend = (finishedEvent) => {
+      if (finishedEvent.target && finishedEvent.target.result) {
+        setAttachment(finishedEvent.target.result as string);
+      } else {
+        console.error('FileReader result is null');
+      }
+    };
+
+    reader.readAsDataURL(theFile);
   };
 
-  const handleUpload = async () => {
-    if (!image) return;
-    const storage = getStorage();
-    const storageRef = ref(storage, `images/${image.name}`); // 이미지 이름을 경로로 설정
+  const onClearAttachment = () => setAttachment('');
 
-    try {
-      // 이미지 업로드
-      await uploadBytes(storageRef, image);
-      // 업로드 후 이미지 URL 가져오기
-      const url = await getDownloadURL(storageRef);
-      setImageUrl(url); // 이미지 URL 상태 업데이트
-      alert('이미지가 업로드되었습니다!');
-    } catch (error) {
-      alert('이미지 업로드 실패');
-      console.error(error);
-    }
-  };
   // 데이터 포스트
   async function handleClickCreatePosts() {
     try {
@@ -69,19 +77,28 @@ const Create = () => {
         return;
       }
 
+      let attachmentUrl = '';
+      if (user && attachment !== '') {
+        const attachmentRef = ref(storage, `${user.uid}/${uuidv4()}`);
+        const response = await uploadString(attachmentRef, attachment, 'data_url');
+        attachmentUrl = await getDownloadURL(response.ref);
+      }
+
       // 이미지 URL이 업로드된 후 Firestore에 저장
       const docRef = await addDoc(collection(db, 'newwons'), {
         postTitle,
         postContent,
-        postFile: imageUrl, // 업로드된 이미지 URL을 Firestore에 저장
+        postFile: attachmentUrl,
         author: userName,
         timestamp: serverTimestamp(),
+        postId: user?.uid || '',
       });
 
       alert('등록되었습니다.');
       router.push(`/posts/${docRef.id}`);
     } catch (error) {
-      alert(`${error}`);
+      alert(`오류 발생: ${error}`);
+      console.error(error);
     }
   }
 
@@ -105,23 +122,38 @@ const Create = () => {
         />
 
         <div className={styles.fileBox}>
-          <input
-            className={styles.fileName}
-            value={image ? image.name : '첨부파일'}
-            type="text"
-            placeholder="첨부파일"
-            readOnly
+          <Input
+            type="file"
+            id="attach-file"
+            accept="image/*"
+            onChange={onFileChange}
+            className={styles.blind}
           />
-          <label className={styles.fileButtonRole} onClick={handleUpload} htmlFor="file">
-            파일찾기
+          <input
+            type="text"
+            style={{ width: '100%' }}
+            defaultValue={attachment}
+            placeholder="첨부파일"
+          />
+          <label htmlFor="attach-file" className={styles.fileButton}>
+            파일 선택
           </label>
-          <input type="file" id="file" className={styles.blind} onChange={handleFileChange} />
         </div>
-      </div>
+        {attachment && (
+          <div className={styles.preview}>
+            <img src={attachment} alt="PostImg" />
+            <div onClick={onClearAttachment} className={styles.removeButton}>
+              <span>Remove</span>
+            </div>
+          </div>
+        )}
 
-      <button onClick={handleClickCreatePosts}>작성하기 임시버튼</button>
-      <br />
-      <Button />
+        <br></br>
+
+        <button onClick={handleClickCreatePosts}>작성하기 임시버튼</button>
+        <br />
+        <Button />
+      </div>
     </div>
   );
 };

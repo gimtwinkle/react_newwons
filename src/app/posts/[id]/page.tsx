@@ -63,7 +63,18 @@ const Detail = ({ postTitle, postContent, author, category, timestamp }: Post) =
         timestamp={postData.timestamp}
         href={`${params.id}`}
       />
+
+      {postData.postFile && (
+        <img
+          src={`${postData.postFile}`}
+          width="50%"
+          height="auto"
+          style={{ width: '100%', maxWidth: '500px', height: 'auto', textAlign: 'center' }}
+          alt="PostImg"
+        />
+      )}
       <div className={styles.postContent}>{postData.postContent}</div>
+
       <button
         onClick={() => {
           router.push(`/`);
