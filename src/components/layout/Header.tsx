@@ -1,8 +1,8 @@
 'use client';
 import img_logo from '@/assets/images/google_logo.png';
-import Login from '@/components/common/Login';
-import Modal from '@/components/common/Modal';
-import { isLoggedIn, logout, useUserName } from '@/utils/auth';
+import { app } from '@/firebase';
+import { isLoggedIn, logout, useUserInfo } from '@/utils/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -50,51 +50,67 @@ const Item = styled.li`
   }
 `;
 
-const Header = () => {
-  const currentUser = isLoggedIn();
-  const { isLogged = false, userName } = useUserName({ currentUser });
+const Profile = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  margin-right: 5px;
+`;
 
-  const [modalShow, setModalShow] = useState(false);
+const Header = () => {
+  const [userProfile, setUserProfile] = useState('');
+  const currentLoggedState = isLoggedIn();
+  const { isLogged = false, userName } = useUserInfo({ currentLoggedState });
+
   useEffect(() => {
+    const auth = getAuth(app);
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserProfile(`${user.displayName}`);
+        setUserProfile(`${user.photoURL}`);
+      } else {
+        setUserProfile('');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleClickLogout = () => {
     if (isLogged) {
-      setModalShow(false);
+      logout();
     } else {
-      setModalShow(true);
     }
-  }, [isLogged]);
+  };
   return (
+    //로그인 안했을때 아무것도 없음.
+    //로그인 했을때 헤더 노출 + 로그아웃 버튼
     <HeaderBox>
-      <span>{isLogged ? `로그인한 사용자: ${userName}` : '로그인하지 않음'}</span>
       <Logo>
         <Link href={'/'}>
           <Image src={img_logo} alt="logo" />
         </Link>
       </Logo>
-      <Nav>
-        <List>
-          <Item>{isLogged ? <button onClick={logout}>LOGOUT</button> : null}</Item>
-          <Item>
-            <Link href={'/posts/create'}>작성하기</Link>
-          </Item>
-          <Item>
-            <Link href={'#none'}>Menu</Link>
-          </Item>
-        </List>
-      </Nav>
-      {/* () => setVisible(false) 값(기능)을 전달해야 하니까  () => 써서 함수라는것을 알려줘야 함, {setVisible(false)} 적으면 void 값이 전달 됨 */}
-      {/* {visible ? (
-        <Modal dimmedClick={() => setVisible(false)}>
-          <p>이곳에 원하는 내용을 넣을 수 있어요!</p>
-        </Modal>
-      ) : (
-        <></>
-      )}   밑에거랑 같은식인데 거짓인데 랜더링 할 게 없을 경우 밑에처럼 간결하게 쓸 수 있음*/}
-
-      {modalShow && (
-        <Modal modalVisible={modalShow}>
-          <Login />
-        </Modal>
-      )}
+      {isLogged ? (
+        <div style={{ display: 'flex', gap: '50px' }}>
+          <Nav>
+            <List>
+              <Item>
+                <Link href={'/posts/create'}>Write</Link>
+              </Item>
+              <Item>
+                <Link href={'#none'}>Calendar(예정)</Link>
+              </Item>
+            </List>
+          </Nav>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <Profile src={userProfile} />
+            {userName}
+            <button onClick={handleClickLogout}>LOGOUT</button>
+          </div>
+        </div>
+      ) : null}
     </HeaderBox>
   );
 };

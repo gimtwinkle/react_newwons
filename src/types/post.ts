@@ -1,6 +1,7 @@
 export interface Post {
   postTitle: string;
   postContent: string;
+  postFile: Blob | File | null;
   author: string;
   category: string;
   timestamp: string;
