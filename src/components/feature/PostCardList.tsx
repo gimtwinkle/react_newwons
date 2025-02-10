@@ -1,4 +1,5 @@
 'use client';
+import defaultImg from '@/assets/images/defaultThumbnail.jpg';
 import { db } from '@/firebase';
 import { PostCardProps } from '@/types/post';
 import { convertTimestamp } from '@/utils/date';
@@ -23,7 +24,7 @@ export const PostCardList = () => {
             postTitle: data.postTitle,
             postContent: data.postContent,
             author: data.author,
-            thumbnail: data.postFile || `${'/defaultThumbnail.jpg'}`,
+            thumbnail: data.postFile || defaultImg,
             timestamp: convertTimestamp(data.timestamp),
             category: data.category,
           });
@@ -63,4 +64,5 @@ const ListContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
+  flex: 1;
 `;
