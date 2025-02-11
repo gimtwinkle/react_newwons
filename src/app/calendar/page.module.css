@@ -1,0 +1,7 @@
+.calendarContainer {
+  flex: 1;
+  height: 100%;
+  width: 1000px;
+  margin: 20px auto;
+  padding: 100px 0;
+}
