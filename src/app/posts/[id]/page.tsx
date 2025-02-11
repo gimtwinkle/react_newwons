@@ -86,7 +86,7 @@ const Detail = () => {
     if (!confirmDelete) return;
 
     try {
-      const docRef = doc(db, 'newwons', String(params.id));
+      const docRef = doc(db, `newwons/${params.id}`);
 
       await deleteDoc(docRef);
       alert('삭제가 완료되었습니다.');
