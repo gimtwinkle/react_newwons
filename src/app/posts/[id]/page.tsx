@@ -5,7 +5,7 @@ import { db } from '@/firebase';
 import { Post } from '@/types/post';
 import { isLoggedIn, useUserInfo } from '@/utils/auth';
 import { convertTimestamp } from '@/utils/date';
-import { doc, getDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -71,6 +71,16 @@ const Detail = () => {
       </div>
     );
 
+  const handleClickDelete = () => {
+    //NOTICE
+    //컬렉션명 : newwons
+    //await는 async와 사용해야합니다.
+
+    //TODO
+    //삭제할건지 확인: 확인 -> 삭제 -> 삭제 완료 알럿 -> 이후 리스트 페이지 이동
+    //삭제할건지 확인: 취소 -> 함수 실행 취소
+    await deleteDoc(doc(db, `${컬렉션명}`, `${해당문서번호}`));
+  };
   return (
     <div className={styles.postContainer}>
       <PostInfoGroup
@@ -102,13 +112,16 @@ const Detail = () => {
       </button>
 
       {userName === postData?.author ? (
-        <button
-          onClick={() => {
-            router.push(`${params.id}/edit`);
-          }}
-        >
-          수정하하기
-        </button>
+        <>
+          <button
+            onClick={() => {
+              router.push(`${params.id}/edit`);
+            }}
+          >
+            수정하하기
+          </button>
+          <button onClick={handleClickDelete}>삭제하기</button>
+        </>
       ) : null}
     </div>
   );
