@@ -146,7 +146,7 @@ const Calendar = () => {
     };
 
     fetchEvents();
-  }, []);
+  }, [userColors]);
 
   return (
     <div className={styles.calendarContainer}>
