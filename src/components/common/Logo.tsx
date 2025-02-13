@@ -10,7 +10,7 @@ const Logo = ({ color = 'black' }: LogoProps) => {
     <LogoComponent>
       <Link href="/" passHref>
         <StyledText color={color}>
-          CHOCHO,
+          JOJO,
           <br />
           SONBITNA
         </StyledText>
