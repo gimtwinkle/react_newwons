@@ -87,14 +87,7 @@ const Header = () => {
                 <Link href={'/posts/create'}>Write</Link>
               </Item>
               <Item>
-                <Link
-                  href={'#'}
-                  onClick={() => {
-                    alert('준비중!');
-                  }}
-                >
-                  Calendar(예정)
-                </Link>
+                <Link href={'/calendar'}>Calendar</Link>
               </Item>
             </List>
           </Nav>

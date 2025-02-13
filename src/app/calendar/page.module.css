@@ -1,0 +1,18 @@
+.calendarContainer {
+  flex: 1;
+  height: 100%;
+  width: 1000px;
+  margin: 70px auto;
+  padding: 50px 0 100px 0;
+}
+.blind {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  font-size: 0;
+  line-height: 0;
+  text-indent: -9999px;
+}
+.sidebar {
+  margin: 20px 0;
+}
