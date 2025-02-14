@@ -27,8 +27,10 @@ interface CalendarEvent {
 // ✅ 각자의 아이디와 원하는 색상코드를 입력해주세용~!
 const userColors: Record<string, string> = {
   'beingnami2023@gmail.com': '#3aa18c',
-  '1@gmail.com': '#000',
-  '2@gmail.com': '#111',
+  'eunyjin.family@gmail.com': '#FFB2B2',
+  'hasyory@gmail.com': 'babypink',
+  'seoramyeon@gmail.com': '#a9f5d0',
+  'sujinjo405@gmail.com': '#ff33f4',
   default: '#888888', // 기본 회색
 };
 
@@ -93,6 +95,7 @@ const Calendar = () => {
             start: event.start?.toISOString(),
             end: event.end?.toISOString(),
           });
+          console.log(event.start?.toISOString());
         }
       });
     } catch (error) {
