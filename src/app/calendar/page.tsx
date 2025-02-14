@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  DateSelectArg,
-  EventApi,
-  EventClickArg,
-  EventContentArg,
-  EventDropArg,
-  formatDate,
-} from '@fullcalendar/core';
+import { DateSelectArg, EventClickArg, EventContentArg, EventDropArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { EventResizeDoneArg } from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
@@ -147,7 +140,7 @@ const Calendar = () => {
     };
 
     fetchEvents();
-  }, [userColors]);
+  }, []);
 
   return (
     <div className={styles.calendarContainer}>
@@ -225,16 +218,6 @@ const Sidebar = ({
         </label>
       </div>
     </div>
-  );
-};
-
-/** 사이드바 이벤트 리스트 */
-const SidebarEvent = ({ event }: { event: EventApi }) => {
-  return (
-    <li>
-      <b>{formatDate(event.start as Date, { year: 'numeric', month: 'short', day: 'numeric' })}</b>
-      <i>{event.title}</i>
-    </li>
   );
 };
 
